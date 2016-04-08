@@ -1,9 +1,7 @@
 var express = require('express');
 var app = express();
 
-app.get('/', function (req, res) {
-	res.send('Initial page');
-});
+app.use('/api/users', require('./routes/user.js'));
 
 app.listen(80, function () {
 	console.log('Server running at port 80');
