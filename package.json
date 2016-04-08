@@ -1,0 +1,27 @@
+{
+  "name": "medhelp-api",
+  "version": "1.0.0",
+  "description": "Medhelp's restful api",
+  "main": "index.js",
+  "scripts": {
+    "test": "mocha"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/medhelp-app/api.git"
+  },
+  "keywords": [
+    "api",
+    "node",
+    "medhelp"
+  ],
+  "author": "Paulo Menezes",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/medhelp-app/api/issues"
+  },
+  "homepage": "https://github.com/medhelp-app/api#readme",
+  "dependencies": {
+    "express": "^4.13.4"
+  }
+}
