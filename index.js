@@ -9,6 +9,6 @@ app.use(bodyParser.urlencoded({ extended: true }));
 app.use(bodyParser.json());
 app.use('/api/users', require('./routes/user.js'));
 
-app.listen(8080, function () {
+app.listen(80, function () {
 	console.log('Server running at port 80');
 });
