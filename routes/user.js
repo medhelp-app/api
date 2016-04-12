@@ -14,4 +14,14 @@ router.route('/').get(function (req, res) {
 	});
 });
 
+router.route('/').post(function (req, res) {
+	userController.insert(req.body, function (user, error) {
+		if (error) {
+			res.send(error);
+		} else {
+			res.json(user);
+		}
+	});
+});
+
 module.exports = router;
