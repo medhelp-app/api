@@ -54,6 +54,24 @@ UserController.prototype.insert = function(_user, callback) {
 	});
 };
 
+UserController.prototype.login = function(login, callback) {
+	if (login && login.email && login.password) {
+		User.find({ email: login.email, password: login.password }, function (error, users) {
+			if (error) {
+				callback(null, error);
+			} else {
+				if (users.length > 0) {
+					callback(users[0]);
+				} else {
+					callback(null, { error: 'E-mail ou senha inválidos.' });
+				}
+			}
+		});
+	} else {
+		callback(null, { error: 'E-mail ou senha inválidos.' });
+	}
+};
+
 UserController.prototype.delete = function(id, callback) {
 	User.remove({ _id: id }, function (error) {
 		if (error) {

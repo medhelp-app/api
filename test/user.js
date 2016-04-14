@@ -20,7 +20,12 @@ describe('User Controller', function () {
 		id: '1',
 		email: 'teste',
 		password: '123'
-	}
+	};
+
+	var login = {
+		email: user.email,
+		password: user.password
+	};
 
 	describe('When call UserController.getAll()', function () {
 		it('should return a list with all users', function (done) {
@@ -89,6 +94,28 @@ describe('User Controller', function () {
 			userController.insert(user, function (_user, error) {
 				expect(_user).to.not.be.ok
 				expect(error.error).to.equal('E-mail duplicado.');
+
+				done();
+			});
+		});
+	});
+
+	describe('When call UserController.login(email, password)', function () {
+		it('should return a logged user if the email and password is valid', function (done) {
+			userController.login(login, function (_user, error) {
+				expect(_user).to.be.instanceof(Object);
+				expect(error).to.not.be.ok;
+
+				done();
+			});
+		});
+
+		it('should return a invalid email or password message if the email or password is invalid', function (done) {
+			login.email = invalids.email;
+
+			userController.login(login, function (_user, error) {
+				expect(_user).to.not.be.ok
+				expect(error.error).to.equal('E-mail ou senha inválidos.');
 
 				done();
 			});

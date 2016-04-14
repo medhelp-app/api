@@ -26,4 +26,15 @@ router.route('/').post(function (req, res) {
 	});
 });
 
+router.route('/login').post(function (req, res) {
+	userController.login(req.body, function (user, error) {
+		if (error) {
+			res.status(400);
+			res.send(error);
+		} else {
+			res.json(user);
+		}
+	});
+});
+
 module.exports = router;
