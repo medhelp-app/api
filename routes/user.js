@@ -7,6 +7,7 @@ var userController = new UserController();
 router.route('/').get(function (req, res) {
 	userController.getAll(function (users, error) {
 		if (error) {
+			res.status(400);
 			res.send(error);
 		} else {
 			res.json(users);
@@ -17,6 +18,7 @@ router.route('/').get(function (req, res) {
 router.route('/').post(function (req, res) {
 	userController.insert(req.body, function (user, error) {
 		if (error) {
+			res.status(400);
 			res.send(error);
 		} else {
 			res.json(user);

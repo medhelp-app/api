@@ -6,9 +6,12 @@ mongoose.connect('mongodb://localhost/medhelp');
 
 describe('User Controller', function () {
 	var userController = new UserController();
+
+	var randomEmail = 'medhelp_' + Date.now() + '@medhelp.com';
+
 	var user = {
 		name: 'Paulo',
-		email: 'paulo@gmail.com',
+		email: randomEmail,
 		password: '1234567',
 		rePassword: '1234567'
 	};
@@ -54,7 +57,7 @@ describe('User Controller', function () {
 		});
 
 		it('should return a invalid password message if the passwords is not equals', function (done) {
-			user.email = 'paulo@gmail.com';
+			user.email = randomEmail;
 			user.rePassword = invalids.password;
 
 			userController.insert(user, function (_user, error) {
@@ -66,7 +69,7 @@ describe('User Controller', function () {
 		});
 
 		it('should return a invalid password message if the password is less than 6 characters', function (done) {
-			user.email = 'paulo@gmail.com';
+			user.email = randomEmail;
 			user.password = invalids.password;
 			user.rePassword = invalids.password;
 
@@ -79,7 +82,7 @@ describe('User Controller', function () {
 		});
 
 		it('should return a duplicated email message if the email is duplicated', function (done) {
-			user.email = 'paulo@gmail.com';
+			user.email = randomEmail;
 			user.password = '1234567';
 			user.rePassword = '1234567';
 

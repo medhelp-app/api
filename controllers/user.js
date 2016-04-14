@@ -25,18 +25,22 @@ UserController.prototype.insert = function(_user, callback) {
 			if (functions.validateEmail(_user.email)) {
 				if (_user.password == _user.rePassword && _user.password.length > 6) {
 					if (users.length === 0) {
-						var user = new User();
-						user.name = _user.name;
-						user.email = _user.email;
-						user.password = _user.password;
+						if (_user.name) {
+							var user = new User();
+							user.name = _user.name;
+							user.email = _user.email;
+							user.password = _user.password;
 
-						user.save(function (error, _user) {
-							if (error) {
-								callback(null, error);
-							} else {
-								callback(_user);
-							}
-						});
+							user.save(function (error, _user) {
+								if (error) {
+									callback(null, error);
+								} else {
+									callback(_user);
+								}
+							});
+						} else {
+							callback(null, { error: 'O campo \'name\' é obrigatório.' });	
+						}
 					} else {
 						callback(null, { error: 'E-mail duplicado.' });
 					}
