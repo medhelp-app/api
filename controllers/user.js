@@ -1,9 +1,17 @@
+var PatientController = require('../controllers/patient');
+var DoctorController = require('../controllers/doctor');
 var User = require('../models/user');
 var Functions = require('../util/functions');
 
 function UserController () {
 	this.functions = new Functions();
 }
+
+var PatientController = require('../controllers/patient');
+var patientController = new PatientController();
+var DoctorController = require('../controllers/doctor');
+var doctorController = new DoctorController();
+
 
 UserController.prototype.getAll = function(callback) {
 	User.find(function (error, users) {
@@ -17,7 +25,7 @@ UserController.prototype.getAll = function(callback) {
 
 UserController.prototype.insert = function(_user, callback) {
 	var functions = this.functions;
-
+	var e = _user.enum;
 	User.find({ email: _user.email }, function (error, users) {
 		if (error) {
 			callback(null, error);
@@ -30,12 +38,42 @@ UserController.prototype.insert = function(_user, callback) {
 							user.name = _user.name;
 							user.email = _user.email;
 							user.password = _user.password;
-
+			
 							user.save(function (error, _user) {
 								if (error) {
 									callback(null, error);
 								} else {
-									callback(_user);
+									//callback(_user);
+									if(e == 0){
+										patientController.insert(_user._id,function (patient, error) {
+											if(error){
+												//remover user
+												UserController.prototype.delete(_user._id, function (error) {
+													callback({error: 'Erro ao cadastrar o usuário.'});
+												});
+											} else {
+												callback(_user);
+											}
+										});
+									}else if(e == 1) {
+										doctorController.insert(_user._id, function (doctor, error) {
+											if(error){
+												//remover user
+												UserController.prototype.delete(_user._id, function (error) {
+													callback({error: 'Erro ao cadastrar o usuário.'});
+												});
+											}else{
+												callback(_user);
+											}
+										})
+									}else{
+										//remover user
+										UserController.prototype.delete(_user._id, function (error) {
+											callback({error: 'Erro ao cadastrar o usuário.'});
+
+										});
+
+									}
 								}
 							});
 						} else {

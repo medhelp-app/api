@@ -54,7 +54,7 @@ describe('User Controller', function () {
 			user.email = invalids.email;
 
 			userController.insert(user, function (_user, error) {
-				expect(_user).to.not.be.ok
+				expect(_user).to.not.be.ok;
 				expect(error.error).to.equal('E-mail inválido.');
 
 				done();

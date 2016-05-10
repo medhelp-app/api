@@ -14,6 +14,8 @@ app.use(function(req, res, next) {
 });
 
 app.use('/api/users', require('./routes/user.js'));
+app.use('/api/doctors', require('./routes/doctor.js'));
+app.use('/api/patients', require('./routes/patient.js'));
 
 app.listen(80, function () {
 	console.log('Server running at port 80');
