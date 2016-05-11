@@ -1,5 +1,6 @@
 var expect = require('chai').expect;
 var UserController = require('../controllers/user');
+var PatientController = require('../controllers/patient')
 
 var mongoose = require('mongoose');
 mongoose.connect('mongodb://localhost/medhelp');
@@ -10,6 +11,7 @@ describe('User Controller', function () {
 	var randomEmail = 'medhelp_' + Date.now() + '@medhelp.com';
 
 	var user = {
+		enum: 0,
 		name: 'Paulo',
 		email: randomEmail,
 		password: '1234567',
@@ -17,6 +19,7 @@ describe('User Controller', function () {
 	};
 
 	var invalids = {
+		enum: 3,
 		id: '1',
 		email: 'teste',
 		password: '123'
@@ -94,6 +97,22 @@ describe('User Controller', function () {
 			userController.insert(user, function (_user, error) {
 				expect(_user).to.not.be.ok
 				expect(error.error).to.equal('E-mail duplicado.');
+
+				done();
+			});
+		});
+		it('should return a invalid enum message if the enum is invalid', function (done) {
+			var user = {
+				enum : 3,
+				name: 'Paulo',
+				email: 'paulo@gmail.com',
+				password: '1234567',
+				rePassword: '1234567'
+			}
+
+			userController.insert(user, function (_user, error) {
+				expect(_user).to.not.be.ok
+				expect(error.error).to.equal('Tipo de usuário inválido.');
 
 				done();
 			});

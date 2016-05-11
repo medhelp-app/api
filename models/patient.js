@@ -4,11 +4,11 @@
 var mongoose = require('mongoose');
 var Schema = mongoose.Schema;
 
-var PacientSchema = new Schema({
+var PatientSchema = new Schema({
     idUser : {
         type: String,
         required: true
     }
 });
 
-module.exports = mongoose.model('pacient', PacientSchema);
+module.exports = mongoose.model('patient', PatientSchema);
