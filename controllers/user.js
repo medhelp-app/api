@@ -14,7 +14,24 @@ UserController.prototype.getAll = function(callback) {
 		}
 	});
 };
-
+UserController.prototype.update = function (id, user, callback) {
+	User.update({_id:id}, { $set: user}, {upsert: false}, function (error, status) {
+		if(error){
+			callback(error);
+		} else{
+			callback(status);
+		}
+	});
+}
+UserController.prototype.getEmail = function(_email,callback) {
+	User.find({email:_email},function (error, users) {
+		if (error) {
+			callback(null, error);
+		} else {
+			callback(users);
+		}
+	});
+};
 UserController.prototype.getForId = function (idUser, callback) {
 	User.findOne({_id: idUser},function (error, user) {
 		if(error){

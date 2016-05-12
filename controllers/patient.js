@@ -1,9 +1,9 @@
 var Patient = require('../models/patient');
 var UserController = require('../controllers/user');
-
+var Functions = require('../util/functions');
 
 function PatientController () {
-    
+    this.functions = new Functions();
 }
 
 var userController = new UserController();
@@ -54,28 +54,69 @@ PatientController.prototype.getForId = function (idUser, callback) {
 };
 
 PatientController.prototype.update = function (id, _patient, callback) {
+    var functions = this.functions;
     userController.getForId(id, function (user, error) {
         if(error){
             callback({error: 'Id inválido.'});
         }else {
-            var patient = {
-                addressStreet :_patient.addressStreet,
-                addressNumber : _patient.addressNumber,
-                city : _patient.city,
-                state : _patient.state,
-                zipCode : _patient.zipCode,
-                country : _patient.country,
-                phone : _patient.phone
-            }
+            if (functions.validateEmail(_patient.email)) {
+                var userUpdate = {
+                    name: _patient.name,
+                    email: _patient.email
+                }
+                var patientUpdate = {
+                    addressStreet :_patient.addressStreet,
+                    addressNumber : _patient.addressNumber,
+                    city : _patient.city,
+                    state : _patient.state,
+                    zipCode : _patient.zipCode,
+                    country : _patient.country,
+                    phone : _patient.phone
+                }
+                if(user.email === _patient.email){
+                    userController.update(id,userUpdate, function (status, error) {
+                        if(error){
+                            callback(error);
+                        } else{
+                            Patient.update({_id:id}, { $set: patientUpdate}, {upsert: true}, function (error, status) {
 
-            Patient.update({_id:id}, { $set: patient}, {upsert: true}, function (error, patientUpdate) {
-               if(error){
-                   callback(error);
-               } else{
-                   callback({ sucess: "ok" })
-               }
-            });
+                                if(error){
+                                    callback(error);
+                                } else{
+                                    callback({ sucess: "ok" });
+                                }
+                            });
 
+                        };
+                    });
+                }else{
+                    userController.getEmail(_patient.email,function (users, erros) {
+                        if(erros){
+                            callback(erros);
+                        }else {
+                            if(users.length===0){
+                                userController.update(id,userUpdate, function (status, error) {
+                                    if(error){
+                                        callback(error);
+                                    } else{
+                                        Patient.update({_id:id}, { $set: patientUpdate}, {upsert: true}, function (error, status) {
+                                            if(error){
+                                                callback(error);
+                                            } else{
+                                                callback({ sucess: "ok" });
+                                            };
+                                        });
+                                    };
+                                });
+                            }else{
+                                callback({error : 'E-mail já existente.'});
+                            };
+                        };
+                    });
+                };
+            }else{
+                callback({error: 'E-mail inválido.'});
+            };
         };
     });
 };
