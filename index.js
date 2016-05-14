@@ -54,7 +54,7 @@ app.use('/api/users', require('./routes/user.js'));
 app.use('/api/doctors', require('./routes/doctor.js'));
 app.use('/api/patients', require('./routes/patient.js'));
 
-var port = Number(process.env.PORT || 80);
+var port = Number(process.env.PORT || 8080);
 
 app.listen(port, function () {
 	console.log('Server running at port ' + port);
