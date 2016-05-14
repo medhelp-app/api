@@ -1,16 +1,53 @@
+var morgan = require('morgan');
 var express = require('express');
 var bodyParser = require('body-parser');
 
+var jwt = require('jsonwebtoken');
+
+var config = require('./config');
+
 var mongoose = require('mongoose');
-mongoose.connect('mongodb://localhost/medhelp');
+mongoose.connect(config.database);
 
 var app = express();
+app.set('superSecret', config.secret);
+app.use(morgan('dev'));
+
 app.use(bodyParser.urlencoded({ extended: true }));
 app.use(bodyParser.json());
 app.use(function(req, res, next) {
 	res.header("Access-Control-Allow-Origin", "*");
 	res.header("Access-Control-Allow-Headers", "Origin, X-Requested-With, Content-Type, Accept");
 	next();
+});
+
+global.getSuperSecret = app.get('superSecret');
+
+app.use(function (req, res, next) {
+	if (req.url.indexOf('/users/login') >= 0) {
+		next();
+	} else {
+		var token = req.body.token  || req.query.token || req.headers['x-access-token'];
+
+		if (token) {
+			jwt.verify(token, global.getSuperSecret, function (error, decoded) {
+				if (error) {
+					return res.json({
+						success: false,
+						message: 'Token inválido'
+					});
+				} else {
+					req.decoded = decoded;
+					next();
+				}
+			})
+		} else {
+			return res.status(403).send({
+				success: false,
+				message: 'Nenhum token enviado'
+			});
+		}
+	}
 });
 
 app.use('/api/users', require('./routes/user.js'));
