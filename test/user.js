@@ -11,7 +11,7 @@ describe('User Controller', function () {
 	var randomEmail = 'medhelp_' + Date.now() + '@medhelp.com';
 
 	var user = {
-		enum: 0,
+		userType: 0,
 		name: 'Paulo',
 		email: randomEmail,
 		password: '1234567',
@@ -19,7 +19,7 @@ describe('User Controller', function () {
 	};
 
 	var invalids = {
-		enum: 3,
+		userType: 3,
 		id: '1',
 		email: 'teste',
 		password: '123'
@@ -101,9 +101,9 @@ describe('User Controller', function () {
 				done();
 			});
 		});
-		it('should return a invalid enum message if the enum is invalid', function (done) {
+		it('should return a invalid userType message if the userType is invalid', function (done) {
 			var user = {
-				enum : 3,
+				userType : 3,
 				name: 'Paulo',
 				email: 'paulo@gmail.com',
 				password: '1234567',

@@ -14,7 +14,7 @@ var UserSchema = new Schema({
 		type: String, 
 		required: true 
 	},
-	typeUser: {
+	userType: {
 		type: String,
 		required: true
 	}

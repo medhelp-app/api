@@ -6,8 +6,6 @@ function DoctorController () {
     this.functions = new Functions();
 }
 
-var userController = new UserController();
-
 DoctorController.prototype.getAll = function(callback) {
     Doctor.find(function (error, doctors) {
         if (error) {
@@ -17,8 +15,27 @@ DoctorController.prototype.getAll = function(callback) {
         }
     });
 };
-
+DoctorController.prototype.insert = function (_doctor, callback) {
+    var doctor = new Doctor();
+    doctor._id = _doctor._id;
+    doctor.addressStreet = _doctor.addressStreet;
+    doctor.addressNumber = _doctor.addressNumber;
+    doctor.city = _doctor.city;
+    doctor.state = _doctor.state;
+    doctor.zipCode = _doctor.zipCode;
+    doctor.country = _doctor.country;
+    doctor.phone = _doctor.phone;
+    doctor.crm = _doctor.crm;
+    doctor.save(function (error, doctor) {
+        if (error) {
+            callback(null, error);
+        } else {
+            callback(doctor);
+        }
+    })
+}
 DoctorController.prototype.getForId = function (idUser, callback) {
+    var userController = new UserController();
     Doctor.findOne({_id: idUser},function (error, doctor) {
         if(error){
             callback(null,error);
@@ -32,7 +49,7 @@ DoctorController.prototype.getForId = function (idUser, callback) {
                             _id: doctor._id,
                             name: user.name,
                             email: user.email,
-                            typeUser: user.enum,
+                            userType: user.userType,
                             password: user.password,
                             addressStreet: doctor.addressStreet,
                             addressNumber: doctor.addressNumber,
@@ -55,6 +72,7 @@ DoctorController.prototype.getForId = function (idUser, callback) {
 };
 
 DoctorController.prototype.update = function (id, _doctor, callback) {
+    var userController = new UserController();
     var functions = this.functions;
     userController.getForId(id, function (user, error) {
         if(error){
