@@ -6,36 +6,28 @@ var Schema = mongoose.Schema;
 
 var DoctorSchema = new Schema({
     addressStreet :{
-        type : String,
-        required: true
+        type : String
     },
     addressNumber :{
-        type : String,
-        required: true
+        type : String
     },
     city :{
-        type : String,
-        required: true
+        type : String
     },
     state :{
-        type : String,
-        required: true
+        type : String
     },
     zipCode :{
-        type : String,
-        required: true
+        type : String
     },
     country :{
-        type : String,
-        required: true
+        type : String
     },
     phone :{
-        type : String,
-        required: true
+        type : String
     },
     crm :{
-        type : String,
-        required: true
+        type : String
     }
 });
 

@@ -4,9 +4,8 @@ var Functions = require('../util/functions');
 
 function PatientController () {
     this.functions = new Functions();
-}
 
-var userController = new UserController();
+}
 
 PatientController.prototype.getAll = function(callback) {
     Patient.find(function (error, patients) {
@@ -17,8 +16,28 @@ PatientController.prototype.getAll = function(callback) {
         }
     });
 };
+PatientController.prototype.insert = function (_patient, callback) {
 
+    var patient = new Patient();
+    patient._id = _patient._id;
+    patient.addressStreet = _patient.addressStreet;
+    patient.addressNumber = _patient.addressNumber;
+    patient.city = _patient.city;
+    patient.state = _patient.state;
+    patient.zipCode = _patient.zipCode;
+    patient.country = _patient.country;
+    patient.phone = _patient.phone;
+    patient.crm = _patient.crm;
+    patient.save(function (error, patient) {
+        if (error) {
+            callback(null, error);
+        } else {
+            callback(patient);
+        }
+    })
+}
 PatientController.prototype.getForId = function (idUser, callback) {
+    var userController = new UserController();
     Patient.findOne({_id: idUser},function (error, patient) {
         if(error){
             callback(null,error);
@@ -32,7 +51,7 @@ PatientController.prototype.getForId = function (idUser, callback) {
                             _id: patient._id,
                             name: user.name,
                             email: user.email,
-                            typeUser: user.enum,
+                            userType: user.userType,
                             password: user.password,
                             addressStreet: patient.addressStreet,
                             addressNumber: patient.addressNumber,
@@ -54,6 +73,7 @@ PatientController.prototype.getForId = function (idUser, callback) {
 };
 
 PatientController.prototype.update = function (id, _patient, callback) {
+    var userController = new UserController();
     var functions = this.functions;
     userController.getForId(id, function (user, error) {
         if(error){

@@ -1,5 +1,7 @@
 var User = require('../models/user');
 var Functions = require('../util/functions');
+var Patient = require('../models/patient');
+var Doctor = require('../models/doctor');
 
 function UserController () {
 	this.functions = new Functions();
@@ -45,18 +47,20 @@ UserController.prototype.getForId = function (idUser, callback) {
 UserController.prototype.insert = function(_user, callback) {
 	var functions = this.functions;
 
+	var userType = _user.userType;
 	User.find({ email: _user.email }, function (error, users) {
 		if (error) {
 			callback(null, error);
 		} else {
 			if (functions.validateEmail(_user.email)) {
 				if (_user.password == _user.rePassword && _user.password.length > 6) {
+						console.log(users);
 						if (users.length === 0) {
-							if(_user.enum == 0 || _user.enum == 1){
+							if(_user.userType == 0 || _user.userType == 1){
 
 								if (_user.name) {
 									var user = new User();
-									user.typeUser = _user.enum;
+									user.userType = _user.userType;
 									user.name = _user.name;
 									user.email = _user.email;
 									user.password = _user.password;
@@ -65,7 +69,44 @@ UserController.prototype.insert = function(_user, callback) {
 										if (error) {
 											callback(null, error);
 										} else {
-											callback(_user);
+											if (userType == 0) {
+												var patient = new Patient();
+												patient._id = _user._id;
+												patient.addressStreet = "";
+												patient.addressNumber = "";
+												patient.city = "";
+												patient.state = "";
+												patient.zipCode = "";
+												patient.country = "";
+												patient.phone = "";
+
+												patient.save(function (error, patient) {
+													if (error) {
+														callback(null, error);
+													} else {
+														callback(_user);
+													}
+												});
+											} else {
+												var doctor = new Doctor();
+												doctor._id = _user._id;
+												doctor.addressStreet = "";
+												doctor.addressNumber = "";
+												doctor.city = "";
+												doctor.state = "";
+												doctor.zipCode = "";
+												doctor.country = "";
+												doctor.phone = "";
+												doctor.crm = "";
+
+												doctor.save(function (error, doctor) {
+													if (error) {
+														callback(null, error);
+													} else {
+														callback(_user);
+													}
+												});
+											}
 										}
 									});
 								} else {
