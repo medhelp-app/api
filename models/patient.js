@@ -1,11 +1,7 @@
-/**
- * Created by jerem_000 on 09/05/2016.
- */
 var mongoose = require('mongoose');
 var Schema = mongoose.Schema;
 
 var PatientSchema = new Schema({
-    
     addressStreet :{
         type : String
     },

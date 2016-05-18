@@ -16,6 +16,7 @@ UserController.prototype.getAll = function(callback) {
 		}
 	});
 };
+
 UserController.prototype.update = function (id, user, callback) {
 	User.update({_id:id}, { $set: user}, {upsert: false}, function (error, status) {
 		if(error){
@@ -25,6 +26,7 @@ UserController.prototype.update = function (id, user, callback) {
 		}
 	});
 }
+
 UserController.prototype.getEmail = function(_email,callback) {
 	User.find({email:_email},function (error, users) {
 		if (error) {
@@ -34,6 +36,7 @@ UserController.prototype.getEmail = function(_email,callback) {
 		}
 	});
 };
+
 UserController.prototype.getForId = function (idUser, callback) {
 	User.findOne({_id: idUser},function (error, user) {
 		if(error){
@@ -46,15 +49,14 @@ UserController.prototype.getForId = function (idUser, callback) {
 
 UserController.prototype.insert = function(_user, callback) {
 	var functions = this.functions;
-
 	var userType = _user.userType;
+	
 	User.find({ email: _user.email }, function (error, users) {
 		if (error) {
 			callback(null, error);
 		} else {
 			if (functions.validateEmail(_user.email)) {
 				if (_user.password == _user.rePassword && _user.password.length > 6) {
-						console.log(users);
 						if (users.length === 0) {
 							if(_user.userType == 0 || _user.userType == 1){
 
