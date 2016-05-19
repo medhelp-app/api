@@ -1,6 +1,5 @@
 var expect = require('chai').expect;
 var UserController = require('../controllers/user');
-var PatientController = require('../controllers/patient')
 
 var mongoose = require('mongoose');
 mongoose.connect('mongodb://localhost/medhelp');

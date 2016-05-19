@@ -25,7 +25,16 @@ var DoctorSchema = new Schema({
     },
     crm :{
         type : String
-    }
+    },
+    ufCrm:{
+        type : String
+    },
+    profissao:{
+        type : String
+    },
+    situacao:{
+        type : String
+    },
 });
 
 module.exports = mongoose.model('doctor', DoctorSchema);

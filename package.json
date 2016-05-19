@@ -27,7 +27,8 @@
     "express": "^4.13.4",
     "jsonwebtoken": "^6.2.0",
     "mongoose": "^4.4.12",
-    "morgan": "^1.7.0"
+    "morgan": "^1.7.0",
+    "xmlhttprequest": "^1.8.0"
   },
   "devDependencies": {
     "chai": "^3.5.0",
