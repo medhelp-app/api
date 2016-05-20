@@ -28,8 +28,8 @@ DoctorController.prototype.insert = function (_doctor, callback) {
 	doctor.phone = _doctor.phone;
 	doctor.crm = _doctor.crm;
 	doctor.ufCrm = _doctor.ufCrm;
-	doctor.profissao = _doctor.profissao;
-	doctor.situacao = _doctor.situacao;
+	doctor.doctorType = _doctor.doctorType;
+	doctor.crmStatus = _doctor.crmStatus;
 	doctor.save(function (error, doctor) {
 		if (error) {
 			callback(null, error);
@@ -65,8 +65,8 @@ DoctorController.prototype.getForId = function (idUser, callback) {
 							phone: doctor.phone,
 							crm: doctor.crm,
 							ufCrm: doctor.ufCrm,
-							profissao: doctor.profissao,
-							situacao: doctor.situacao
+							doctorType: doctor.doctorType,
+							crmStatus: doctor.crmStatus
 						}
 
 						callback(userFull);
@@ -112,8 +112,8 @@ DoctorController.prototype.update = function (id, _doctor, callback) {
 								phone: _doctor.phone,
 								crm: _doctor.crm,
 								ufCrm: _doctor.ufCrm,
-								profissao: dadosCrm[0].profissao,
-								situacao: dadosCrm[0].situacao
+								doctorType: _doctor.doctorType,
+								crmStatus: dadosCrm[0].crmStatus
 							};
 
 							if (user.email === _doctor.email) {

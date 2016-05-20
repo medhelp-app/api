@@ -29,10 +29,10 @@ var DoctorSchema = new Schema({
     ufCrm:{
         type : String
     },
-    profissao:{
+    doctorType:{
         type : String
     },
-    situacao:{
+    crmStatus:{
         type : String
     },
 });
