@@ -45,5 +45,15 @@ router.route('/login').post(function (req, res) {
 		}
 	});
 });
+router.route('/:id').put(function (req, res) {
+	userController.update(req.params.id, req.body, function (user, error) {
+		if (error) {
+			res.status(400);
+			res.send(error);
+		} else {
+			res.json(user);
+		}
 
+	});
+});
 module.exports = router;

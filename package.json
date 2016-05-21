@@ -28,6 +28,7 @@
     "jsonwebtoken": "^6.2.0",
     "mongoose": "^4.4.12",
     "morgan": "^1.7.0",
+    "sha512": "0.0.1",
     "xmlhttprequest": "^1.8.0"
   },
   "devDependencies": {

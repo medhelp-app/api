@@ -2,7 +2,7 @@ var User = require('../models/user');
 var Functions = require('../util/functions');
 var Patient = require('../models/patient');
 var Doctor = require('../models/doctor');
-
+var sha512 = require('sha512');
 function UserController () {
 	this.functions = new Functions();
 }
@@ -65,8 +65,7 @@ UserController.prototype.insert = function(_user, callback) {
 									user.userType = _user.userType;
 									user.name = _user.name;
 									user.email = _user.email;
-									user.password = _user.password;
-
+									user.password = sha512(_user.password).toString('hex');
 									user.save(function (error, _user) {
 										if (error) {
 											callback(null, error);
@@ -133,7 +132,8 @@ UserController.prototype.insert = function(_user, callback) {
 
 UserController.prototype.login = function(login, callback) {
 	if (login && login.email && login.password) {
-		User.find({ email: login.email, password: login.password }, function (error, users) {
+		var passwordHash = sha512(login.password).toString('hex');
+		User.find({ email: login.email, password: passwordHash }, function (error, users) {
 			if (error) {
 				callback(null, error);
 			} else {
