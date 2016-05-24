@@ -16,6 +16,16 @@ DoctorController.prototype.getAll = function(callback) {
 	});
 };
 
+DoctorController.prototype.findSpeciality = function(callback) {
+	Doctor.find().distinct('doctorType', function (error, doctors) {
+		if (error) {
+			callback(null, error);
+		} else {
+			callback(doctors);
+		}
+	});	
+};
+
 DoctorController.prototype.insert = function (_doctor, callback) {
 	var doctor = new Doctor();
 	doctor._id = _doctor._id;

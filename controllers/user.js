@@ -47,16 +47,36 @@ UserController.prototype.getForId = function (idUser, callback) {
 	})
 };
 
+UserController.prototype.findName = function(name, callback) {
+	User.find({ name: new RegExp('^' + name + '$', "i"), userType: "1" }, function (error, doctors) {
+		if (error) {
+			callback(null, error);
+		} else {
+			callback(doctors);
+		}
+	});
+};
+
+UserController.prototype.findDoctors = function(callback) {
+	User.find({ userType: "1" }).distinct('name', function (error, doctors) {
+		if (error) {
+			callback(null, error);
+		} else {
+			callback(doctors);
+		}
+	});
+};
+
 UserController.prototype.insert = function(_user, callback) {
 	var functions = this.functions;
 	var userType = _user.userType;
-	
+
 	User.find({ email: _user.email }, function (error, users) {
 		if (error) {
 			callback(null, error);
 		} else {
 			if (functions.validateEmail(_user.email)) {
-				if (_user.password == _user.rePassword && _user.password.length > 6) {
+				if (_user.password == _user.rePassword && _user.password.length >= 6) {
 						if (users.length === 0) {
 							if(_user.userType == 0 || _user.userType == 1){
 
@@ -113,10 +133,9 @@ UserController.prototype.insert = function(_user, callback) {
 								} else {
 									callback(null, { error: 'O campo \'name\' é obrigatório.' });
 								}
-							}else{
+							} else {
 								callback(null, { error: 'Tipo de usuário inválido.' });
 							}
-
 						} else {
 							callback(null, { error: 'E-mail duplicado.' });
 						}

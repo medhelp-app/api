@@ -4,6 +4,9 @@ var router = express.Router();
 var DoctorController = require('../controllers/doctor');
 var doctorController = new DoctorController();
 
+var UserController = require('../controllers/user');
+var userController = new UserController();
+
 router.route('/').get(function (req, res) {
 	doctorController.getAll(function (doctors, error) {
 		if (error) {
@@ -15,25 +18,24 @@ router.route('/').get(function (req, res) {
 	});
 });
 
-router.route('/find').get(function (req, res) {
-	doctorController.getAll(function (doctors, error) {
+router.route('/find/suggestions').get(function (req, res) {
+	userController.findDoctors(function (names, error) {
 		if (error) {
 			res.status(404).send(error);
 		} else {
-			var address = [];
-			for (var i = 0; i < doctors.length; i++) {
-				address.push({
-					id: doctors[i].id,
-					addressStreet: doctors[i].addressStreet,
-				    addressNumber: doctors[i].addressNumber,
-				    city: doctors[i].city,
-				    state: doctors[i].state,
-				    zipCode: doctors[i].zipCode,
-				    country: doctors[i].country,
-				});
-			};
+			doctorController.findSpeciality(function (speciality, error) {
+				res.json(names.concat(speciality));	
+			})
+		}
+	});
+});
 
-			res.json(address);
+router.route('/find/:name').get(function (req, res) {
+	userController.findName(req.params.name, function (doctors, error) {
+		if (error) {
+			res.status(404).send(error);
+		} else {
+			res.json(doctors);
 		}
 	});
 });
