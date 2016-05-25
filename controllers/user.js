@@ -48,7 +48,7 @@ UserController.prototype.getForId = function (idUser, callback) {
 };
 
 UserController.prototype.findName = function(name, callback) {
-	User.find({ name: new RegExp('^' + name + '$', "i"), userType: "1" }, function (error, doctors) {
+	User.find({name: new RegExp(name, "i"), userType: "1" }, function (error, doctors) {
 		if (error) {
 			callback(null, error);
 		} else {
