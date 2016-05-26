@@ -100,7 +100,7 @@ UserController.prototype.insert = function(_user, callback) {
 												patient.zipCode = "";
 												patient.country = "";
 												patient.phone = "";
-
+												patient.bodyPart = [{part : 'rightArm', problems: []},{part : 'leftArm', problems: []},{part : 'rightLeg', problems: []},{part : 'leftLeg', problems: []},{part : 'stomach', problems: []},{part : 'chest', problems: []},{part : 'head', problems: []}];
 												patient.save(function (error, patient) {
 													if (error) {
 														callback(null, error);

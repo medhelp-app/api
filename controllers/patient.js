@@ -148,4 +148,155 @@ PatientController.prototype.update = function (id, _patient, callback) {
     });
 };
 
+/* --------------------------bodyPart--------------------------------*/
+PatientController.prototype.getBodyPartById = function (idUser, callback) {
+    Patient.findOne({ _id: idUser },function (error, patient) {
+        if (error) {
+            callback(null, error);
+        } else {
+            if (patient) {
+                callback(patient.bodyPart)
+            } else {
+                callback({ error : "Paciente não existente." });
+            }
+        }
+    })
+};
+
+PatientController.prototype.insertProblem = function (idUser,_problem, callback) {
+    Patient.findOne({ _id: idUser },function (error, patient) {
+        if (error) {
+            callback(null, error);
+        } else {
+            if (patient) {
+                var problem = {
+                    problem: _problem.problem,
+                    description: _problem.description,
+                    severity: _problem.severity,
+                    occurredDate : _problem.occurredDate
+                }
+                if(_problem.part === 'rightArm'){
+                    patient.bodyPart[0].problems.push(problem);
+                    patient.save(function (error) {
+                        if(error){
+                            callback({ success : "false" })
+                        }else{
+                            callback({ success: "true" })
+                        }
+                    })
+                }else if(_problem.part === 'leftArm'){
+                    patient.bodyPart[1].problems.push(problem);
+                    patient.save(function (error) {
+                        if(error){
+                            callback({ success : "false" })
+                        }else{
+                            callback({ success: "true" })
+                        }
+                    })
+                }else if(_problem.part === 'rightLeg'){
+                    patient.bodyPart[2].problems.push(problem);
+                    patient.save(function (error) {
+                        if(error){
+                            callback({ success : "false" })
+                        }else{
+                            callback({ success: "true" })
+                        }
+                    })
+                }else if(_problem.part === 'leftLeg'){
+                    patient.bodyPart[3].problems.push(problem);
+                    patient.save(function (error) {
+                        if(error){
+                            callback({ success : "false" })
+                        }else{
+                            callback({ success: "true" })
+                        }
+                    })
+                }else if(_problem.part === 'stomach'){
+                    patient.bodyPart[4].problems.push(problem);
+                    patient.save(function (error) {
+                        if(error){
+                            callback({ success : "false" })
+                        }else{
+                            callback({ success: "true" })
+                        }
+                    })
+                }else if(_problem.part === 'chest'){
+                    patient.bodyPart[5].problems.push(problem);
+                    patient.save(function (error) {
+                        if(error){
+                            callback({ success : "false" })
+                        }else{
+                            callback({ success: "true" })
+                        }
+                    })
+                }else if(_problem.part === 'head'){
+                    patient.bodyPart[6].problems.push(problem);
+                    patient.save(function (error) {
+                        if(error){
+                            callback({ success : "false" })
+                        }else{
+                            callback({ success: "true" })
+                        }
+                    })
+                }else{
+                    callback({ error : "false" });
+                }
+            } else {
+                callback({ error : "Paciente não existente." });
+            }
+        }
+    })
+}
+
+PatientController.prototype.getProblemsByPart = function (idUser, part, callback) {
+    Patient.find({_id: idUser},{ bodyPart: { $elemMatch: { part: part } }},function (error, patient) {
+        if(error){
+            callback(error)
+        }else{
+            if(patient.length===0){
+                callback({ error : "Paciente não existene." })
+            }else{
+                if(patient[0].bodyPart.length===0){
+                    callback({ error : "Parte do corpo não existente." })
+                }else {
+                    callback(patient[0].bodyPart[0].problems)
+                }
+            }
+
+        }
+    })
+};
+PatientController.prototype.updateProblem = function (idUser,idProblem,_problem, callback) {
+    Patient.findOne({_id: idUser},{ bodyPart: { $elemMatch: { part: _problem.part } }} , function (error, patient) {
+        if (error) {
+            callback(error)
+        } else {
+            var tam = patient.bodyPart[0].problems.length;
+            var problems = patient.bodyPart[0].problems;
+            var encontrou = false;
+            for(var i = 0; i<tam; i++){
+                if(idProblem == patient.bodyPart[0].problems[i]._id) {
+                    problems[i].problem = _problem.problem;
+                    problems[i].description = _problem.description;
+                    problems[i].severity = _problem.severity;
+                    problems[i].occurredDate = _problem.occurredDate;
+                    encontrou = true;
+                    break;
+                }
+            }
+            if(encontrou){
+                Patient.update({ _id: idUser, "bodyPart.part":_problem.part}, { $set: {"bodyPart.$.problems": problems} }, { upsert: false }, function (error, status) {
+                    if(error){
+                        callback(error)
+                    }else{
+                        callback({ success: "true" })
+                    }
+                })
+            }else{
+                callback({ error : "Paciente não existene." })
+            }
+        }
+    })
+}
+
 module.exports = PatientController;

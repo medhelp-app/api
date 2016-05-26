@@ -22,7 +22,8 @@ var PatientSchema = new Schema({
     },
     phone :{
         type : String
-    }
+    },
+    bodyPart : [{part : String, problems: [{problem: String, description:String, severity: String, occurredDate : Date }]}]
 });
 
 module.exports = mongoose.model('patient', PatientSchema);
