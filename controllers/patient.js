@@ -1,6 +1,7 @@
 var Patient = require('../models/patient');
 var UserController = require('../controllers/user');
 var Functions = require('../util/functions');
+var fs = require('fs');
 
 function PatientController () {
     this.functions = new Functions();
@@ -144,6 +145,30 @@ PatientController.prototype.update = function (id, _patient, callback) {
                     callback({ error: 'E-mail inválido.' });
                 };
             }
+        };
+    });
+};
+
+PatientController.prototype.updateImage = function (id, _image, callback) {
+    var userController = new UserController();
+    var functions = this.functions;
+    userController.getForId(id, function (user, error) {
+        if (error) {
+            callback({error: 'Id inválido.'});
+        } else {
+            fs.readFile('./uploads/'+_image.filename, function (error, data) {
+                if(error){
+                    callback(null,error);
+                }
+                else{
+                    var dir = "./image/patients/"+id+"/profileImage_"+id+".png";
+                    fs.writeFile(dir, data, function (error) {
+                        if(error){
+                            callback(error);
+                        }
+                    });
+                }     
+            });             
         };
     });
 };

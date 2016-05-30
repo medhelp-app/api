@@ -1,8 +1,12 @@
 var express = require('express');
 var router = express.Router();
+var multer = require('multer');
 
 var PatientController = require('../controllers/patient');
 var patientController = new PatientController();
+
+var UserController = require('../controllers/user');
+var userController = new UserController();
 
 router.route('/').get(function (req, res) {
     patientController.getAll(function (patients, error) {
@@ -38,6 +42,33 @@ router.route('/:id').put(function (req, res) {
 
     });
 });
+
+router.route('/:id/image').put(multer({
+  dest: './uploads/',
+  rename: function (fieldname, filename) {
+    return fieldname;
+  },
+  onFileUploadStart: function (file) {
+    console.log(file.originalname + ' is starting ...')
+  },
+  limits: {
+    files: 1
+  },
+  onFileUploadComplete: function (file) {
+    console.log(file.fieldname + ' uploaded to  ' + file.path)
+  }
+}).single('profileImage'),function (req, res) {
+    patientController.updateImage(req.params.id, req.file, function (patient, error) {
+        if (error) {
+            res.status(400);
+            res.send(error);
+        } else {
+            res.json(patient);
+        }
+
+    });
+});
+
 /*----------------bodyPart-------------------*/
 router.route('/:id/bodyparts').get(function (req, res) {
     patientController.getBodyPartById(req.params.id,function (bodyParts, error) {
@@ -86,4 +117,5 @@ router.route('/:id/bodyparts/:idProblem').put(function (req, res) {
 
     });
 });
+
 module.exports = router;

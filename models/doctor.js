@@ -34,6 +34,9 @@ var DoctorSchema = new Schema({
     },
     crmStatus:{
         type : String
+    },
+    profileImage:{
+        type : String
     }
 });
 

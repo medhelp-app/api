@@ -23,6 +23,9 @@ var PatientSchema = new Schema({
     phone :{
         type : String
     },
+    profileImage:{
+        type : String
+    },
     bodyPart : [{part : String, problems: [{problem: String, description:String, severity: String, occurredDate : Date }]}]
 });
 

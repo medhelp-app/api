@@ -3,6 +3,8 @@ var Functions = require('../util/functions');
 var Patient = require('../models/patient');
 var Doctor = require('../models/doctor');
 var sha512 = require('sha512');
+var fs = require('fs');
+
 function UserController () {
 	this.functions = new Functions();
 }
@@ -100,7 +102,11 @@ UserController.prototype.insert = function(_user, callback) {
 												patient.zipCode = "";
 												patient.country = "";
 												patient.phone = "";
+												patient.profileImage = "";
 												patient.bodyPart = [{part : 'rightArm', problems: []},{part : 'leftArm', problems: []},{part : 'rightLeg', problems: []},{part : 'leftLeg', problems: []},{part : 'stomach', problems: []},{part : 'chest', problems: []},{part : 'head', problems: []}];
+												
+												fs.mkdirSync("image/patients/"+patient._id);
+												
 												patient.save(function (error, patient) {
 													if (error) {
 														callback(null, error);
@@ -119,6 +125,9 @@ UserController.prototype.insert = function(_user, callback) {
 												doctor.country = "";
 												doctor.phone = "";
 												doctor.crm = "";
+												doctor.profileImage = "";
+
+												fs.mkdirSync("image/doctors/"+doctor._id);
 
 												doctor.save(function (error, doctor) {
 													if (error) {
