@@ -163,8 +163,12 @@ PatientController.prototype.updateImage = function (id, _image, callback) {
                 else{
                     var dir = "./image/patients/"+id+"/profileImage_"+id+".png";
                     fs.writeFile(dir, data, function (error) {
+                        fs.unlink('./uploads/'+_image.filename);
                         if(error){
                             callback(error);
+                        }
+                        else{
+                            callback({ sucess: "ok",imagem: dir });
                         }
                     });
                 }     

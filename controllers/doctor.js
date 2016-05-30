@@ -1,6 +1,7 @@
 var Doctor = require('../models/doctor');
 var UserController = require('../controllers/user');
 var Functions = require('../util/functions');
+var fs = require('fs');
 
 function DoctorController () {
 	this.functions = new Functions();
@@ -174,6 +175,34 @@ DoctorController.prototype.update = function (id, _doctor, callback) {
 			};
 		};
 	});
+};
+
+DoctorController.prototype.updateImage = function (id, _image, callback) {
+    var userController = new UserController();
+    var functions = this.functions;
+    userController.getForId(id, function (user, error) {
+        if (error) {
+            callback({error: 'Id inválido.'});
+        } else {
+            fs.readFile('./uploads/'+_image.filename, function (error, data) {
+                if(error){
+                    callback(null,error);
+                }
+                else{
+                    var dir = "./image/doctors/"+id+"/profileImage_"+id+".png";
+                    fs.writeFile(dir, data, function (error) {
+                    	fs.unlink('./uploads/'+_image.filename);
+                        if(error){
+                            callback(error);
+                        }
+                        else{
+                            callback({ sucess: "ok",imagem: dir });
+                        }
+                    });
+                }     
+            });             
+        };
+    });
 };
 
 module.exports = DoctorController;
