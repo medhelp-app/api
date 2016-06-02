@@ -70,27 +70,15 @@ router.route('/:id/image').put(multer({
 });
 
 router.route('/:id/image').get(function (req,res) {
-    var options = {
-        root: './image/patients/' + req.params.id + '/',
-        dotfiles: 'deny',
-        headers: {
-            'x-timestamp': Date.now(),
-            'x-sent': true
+    patientController.getForIdImage(req.params.id,function (image, error) {
+        if(error){
+            res.status(404);
+            res.send(error);
+        }else{
+            res.status(200);
+            res.json(image);
         }
-    };
-
-    var fileName = 'profileImage_' + req.params.id + '.png';
-    console.log(fileName);
-    res.sendFile(fileName, options, function (err) {
-        if (err) {
-          res.status(404);
-          res.send({error:"Imagem não existe"});
-        }
-        else {
-          res.status(200);
-          res.send({success: "true"});
-        }
-    });
+    })
 });
 
 /*----------------bodyPart-------------------*/

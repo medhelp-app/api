@@ -91,4 +91,16 @@ router.route('/:id/image').put(multer({
     });
 });
 
+router.route('/:id/image').get(function (req,res) {
+    doctorController.getForIdImage(req.params.id,function (image, error) {
+        if(error){
+            res.status(404);
+            res.send(error);
+        }else{
+            res.status(200);
+            res.json(image);
+        }
+    })
+});
+
 module.exports = router;

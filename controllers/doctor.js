@@ -185,6 +185,59 @@ DoctorController.prototype.updateImage = function (id, _image, callback) {
             callback({error: 'Id inválido.'});
         } else {
             fs.readFile('./uploads/'+_image.filename, function (error, data) {
+                data = new Buffer(data).toString('base64');
+                if(error){
+                    callback(null,error);
+                }
+                else{
+                    Doctor.update({ _id: id }, { $set: {profileImage:data} }, { upsert: true }, function (error, status) {
+                        if (error) {
+                            fs.unlink('./uploads/'+_image.filename);
+                            callback(error);
+                        } else {
+                            fs.unlink('./uploads/'+_image.filename);
+                            callback({ sucess: "ok" });
+                        }
+                    });
+                }     
+            });             
+        };
+    });
+};
+
+DoctorController.prototype.getForIdImage = function (idUser, callback) {
+    var userController = new UserController();
+
+    Doctor.findOne({ _id: idUser },function (error, doctor) {
+        if (error) {
+            callback(null, error);
+        } else {
+            if (doctor) {
+                userController.getForId(idUser, function (user, error) {
+                    if (error) {
+                        callback(null, error);
+                    } else {
+                        var image = {
+                            profileImage: doctor.profileImage
+                        };
+                        callback(image);
+                    }
+                });
+            } else {
+                callback({ error : "Paciente não existente." });
+            }
+        }
+    })
+};
+
+/*DoctorController.prototype.updateImage = function (id, _image, callback) {
+    var userController = new UserController();
+    var functions = this.functions;
+    userController.getForId(id, function (user, error) {
+        if (error) {
+            callback({error: 'Id inválido.'});
+        } else {
+            fs.readFile('./uploads/'+_image.filename, function (error, data) {
                 if(error){
                     callback(null,error);
                 }
@@ -203,6 +256,6 @@ DoctorController.prototype.updateImage = function (id, _image, callback) {
             });             
         };
     });
-};
+};*/
 
 module.exports = DoctorController;

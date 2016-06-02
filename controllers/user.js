@@ -105,8 +105,6 @@ UserController.prototype.insert = function(_user, callback) {
 												patient.profileImage = "";
 												patient.bodyPart = [{part : 'rightArm', problems: []},{part : 'leftArm', problems: []},{part : 'rightLeg', problems: []},{part : 'leftLeg', problems: []},{part : 'stomach', problems: []},{part : 'chest', problems: []},{part : 'head', problems: []}];
 												
-												fs.mkdirSync("image/patients/"+patient._id);
-												
 												patient.save(function (error, patient) {
 													if (error) {
 														callback(null, error);
@@ -126,8 +124,6 @@ UserController.prototype.insert = function(_user, callback) {
 												doctor.phone = "";
 												doctor.crm = "";
 												doctor.profileImage = "";
-
-												fs.mkdirSync("image/doctors/"+doctor._id);
 
 												doctor.save(function (error, doctor) {
 													if (error) {

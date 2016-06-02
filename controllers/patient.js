@@ -38,6 +38,7 @@ PatientController.prototype.insert = function (_patient, callback) {
         }
     })
 }
+
 PatientController.prototype.getForId = function (idUser, callback) {
     var userController = new UserController();
 
@@ -66,6 +67,31 @@ PatientController.prototype.getForId = function (idUser, callback) {
                         }
 
                         callback(userFull);
+                    }
+                });
+            } else {
+                callback({ error : "Paciente não existente." });
+            }
+        }
+    })
+};
+
+PatientController.prototype.getForIdImage = function (idUser, callback) {
+    var userController = new UserController();
+
+    Patient.findOne({ _id: idUser },function (error, patient) {
+        if (error) {
+            callback(null, error);
+        } else {
+            if (patient) {
+                userController.getForId(idUser, function (user, error) {
+                    if (error) {
+                        callback(null, error);
+                    } else {
+                        var image = {
+                            profileImage: patient.profileImage
+                        };
+                        callback(image);
                     }
                 });
             } else {
@@ -157,18 +183,18 @@ PatientController.prototype.updateImage = function (id, _image, callback) {
             callback({error: 'Id inválido.'});
         } else {
             fs.readFile('./uploads/'+_image.filename, function (error, data) {
+                data = new Buffer(data).toString('base64');
                 if(error){
                     callback(null,error);
                 }
                 else{
-                    var dir = "./image/patients/"+id+"/profileImage_"+id+".png";
-                    fs.writeFile(dir, data, function (error) {
-                        fs.unlink('./uploads/'+_image.filename);
-                        if(error){
+                    Patient.update({ _id: id }, { $set: {profileImage:data} }, { upsert: true }, function (error, status) {
+                        if (error) {
+                            fs.unlink('./uploads/'+_image.filename);
                             callback(error);
-                        }
-                        else{
-                            callback({ sucess: "ok",imagem: dir });
+                        } else {
+                            fs.unlink('./uploads/'+_image.filename);
+                            callback({ sucess: "ok" });
                         }
                     });
                 }     
