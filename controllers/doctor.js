@@ -66,7 +66,7 @@ DoctorController.prototype.getForId = function (idUser, callback) {
 							name: user.name,
 							email: user.email,
 							userType: user.userType,
-							password: user.password,
+							profileImage: doctor.profileImage,
 							addressStreet: doctor.addressStreet,
 							addressNumber: doctor.addressNumber,
 							city: doctor.city,

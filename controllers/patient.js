@@ -51,12 +51,13 @@ PatientController.prototype.getForId = function (idUser, callback) {
                     if (error) {
                         callback(null, error);
                     } else {
+                        console.log(user.profileImage);
                         var userFull = {
                             _id: patient._id,
                             name: user.name,
                             email: user.email,
                             userType: user.userType,
-                            password: user.password,
+                            profileImage: patient.profileImage,
                             addressStreet: patient.addressStreet,
                             addressNumber: patient.addressNumber,
                             city: patient.city,
