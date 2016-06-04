@@ -1,4 +1,5 @@
 var Doctor = require('../models/doctor');
+var User = require('../models/user');
 var UserController = require('../controllers/user');
 var Functions = require('../util/functions');
 var fs = require('fs');
@@ -25,6 +26,36 @@ DoctorController.prototype.findSpeciality = function(callback) {
 			callback(doctors);
 		}
 	});	
+};
+
+DoctorController.prototype.findName = function(name, callback) {
+	var userController = new UserController();
+	var user = [];
+	User.find({name: new RegExp(name, "i"), userType: "1" }, function (error, users) {
+		if (error) {
+			callback(null, error);
+		} else if(users.length==0){
+			callback({error:"Não existe nenhum usuário com esse nome"});
+		} else {
+			for(var i=0;i < users.length;i++){
+				Doctor.findOne({ _id: users[i]._id }, function (error, doctor) {
+					if (error) {
+						callback(null, error);
+					} else {
+						user.push({
+							name:users[i].name,
+							email:users[i].email,
+							password:users[i].password,
+							profileImage:doctor.profileImage,
+							doctorType:users[i].doctorType,
+							userType:users[i].userType
+						});
+					}
+				});
+			}
+			callback(user);			
+		}
+	});
 };
 
 DoctorController.prototype.insert = function (_doctor, callback) {
@@ -66,7 +97,7 @@ DoctorController.prototype.getForId = function (idUser, callback) {
 							name: user.name,
 							email: user.email,
 							userType: user.userType,
-							profileImage: doctor.profileImage,
+							password: user.password,
 							addressStreet: doctor.addressStreet,
 							addressNumber: doctor.addressNumber,
 							city: doctor.city,

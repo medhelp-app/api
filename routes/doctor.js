@@ -32,7 +32,7 @@ router.route('/find/suggestions').get(function (req, res) {
 });
 
 router.route('/find/:name').get(function (req, res) {
-	userController.findName(req.params.name, function (doctors, error) {
+	doctorController.findName(req.params.name, function (doctors, error) {
 		if (error) {
 			res.status(404).send(error);
 		} else {
