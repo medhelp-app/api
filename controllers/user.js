@@ -4,6 +4,8 @@ var Patient = require('../models/patient');
 var Doctor = require('../models/doctor');
 var sha512 = require('sha512');
 var fs = require('fs');
+var nodemailer = require('nodemailer');
+var transporter = nodemailer.createTransport('smtps://appmedhelp@gmail.com:medhelp123@smtp.gmail.com');
 
 function UserController () {
 	this.functions = new Functions();
@@ -89,6 +91,13 @@ UserController.prototype.insert = function(_user, callback) {
 									user.email = _user.email;
 									user.password = sha512(_user.password).toString('hex');
 									user.save(function (error, _user) {
+										var mailOptions = {
+										    from: '"'+_user.name+' 👥" <'+_user.email+'>',
+										    to: 'appmedhelp@gmail.com, appmedhelp@gmail.com',
+										    subject: 'Bem Vindo ao Medhelp',
+										   	text: 'Bem Vindo ao Medhelp',
+										    html: '<b><h2>Bem Vindo ao Medhelp</h2></b>'
+										};
 										if (error) {
 											callback(null, error);
 										} else {
@@ -109,7 +118,14 @@ UserController.prototype.insert = function(_user, callback) {
 													if (error) {
 														callback(null, error);
 													} else {
-														callback(_user);
+														transporter.sendMail(mailOptions, function(error, info){
+														    if(error){
+														        callback(null,error);
+														    }
+														    else{
+														    	callback(_user);
+														    }
+														});	
 													}
 												});
 											} else {
@@ -129,7 +145,14 @@ UserController.prototype.insert = function(_user, callback) {
 													if (error) {
 														callback(null, error);
 													} else {
-														callback(_user);
+														transporter.sendMail(mailOptions, function(error, info){
+														    if(error){
+														        callback(null,error);
+														    }
+														    else{
+														    	callback(_user);
+														    }
+														});
 													}
 												});
 											}

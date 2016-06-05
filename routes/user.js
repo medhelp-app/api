@@ -17,9 +17,7 @@ router.route('/').get(function (req, res) {
 	});
 });
 
-router.route('/').post(function (req, res) {
-	console.log(req.body);
-	
+router.route('/').post(function (req, res) {	
 	userController.insert(req.body, function (user, error) {
 		if (error) {
 			res.status(400);
