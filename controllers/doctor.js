@@ -30,22 +30,33 @@ DoctorController.prototype.findSpeciality = function(callback) {
 
 DoctorController.prototype.findName = function(name, callback) {
 	var userController = new UserController();
-	User.find({name: new RegExp(name, "i"), userType: "1" }).populate('_id').exec(function (error, users) {
-		var user = [];
+	User.find({name: new RegExp(name, "i"), userType: "1" }, function (error, users) {
 		if (error) {
 			callback(null, error);
-		} else if(users.length==0){
-			callback({error:"Não existe nenhum usuário com esse nome"});
 		} else {
-			user.push(users);
-			user[0].profileImage="asd";
-			for(var i=0;i < users.length;i++){
-				Doctor.findOne({ _id: users[i]._id }, function(error,doctor){
-					
-				});
-			}
-			callback(user);			
-		}		
+			usersId = [];
+			for (var i = 0; i < users.length; i++) {
+		    	usersId.push(users[i]._id);
+		    }
+			Doctor.find({'_id': 
+				{ $in: usersId}
+			}, function(err, doctors){
+					docs = [];
+				    for (var i = 0; i < doctors.length; i++) {
+					    var doctorFull = {
+					    	_id: users[i].id,
+					    	name: users[i].name,
+					    	email: users[i].email,
+					    	doctorType: doctors[i].doctorType,
+					    	profileImage: doctors[i].profileImage
+					    }
+					    docs.push(doctorFull);
+				    }
+				    
+				    callback(docs);
+				}
+			);
+		}
 	});
 };
 
