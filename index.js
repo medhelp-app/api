@@ -33,26 +33,27 @@ app.use(function (req, res, next) {
 	if (req.url.indexOf('/users/login') >= 0 || (req.url.indexOf('/users') >= 0 && req.method == 'POST')) {
 		next();
 	} else {
-		var token = req.body.token  || req.query.token || req.headers['x-access-token'];
+		next();
+		// var token = req.body.token  || req.query.token || req.headers['x-access-token'];
 
-		if (token) {
-			jwt.verify(token, global.getSuperSecret, function (error, decoded) {
-				if (error) {
-					return res.json({
-						success: false,
-						message: 'Token inválido'
-					});
-				} else {
-					req.decoded = decoded;
-					next();
-				}
-			})
-		} else {
-			return res.status(403).send({
-				success: false,
-				message: 'Nenhum token enviado'
-			});
-		}
+		// if (token) {
+		// 	jwt.verify(token, global.getSuperSecret, function (error, decoded) {
+		// 		if (error) {
+		// 			return res.json({
+		// 				success: false,
+		// 				message: 'Token inválido'
+		// 			});
+		// 		} else {
+		// 			req.decoded = decoded;
+		// 			next();
+		// 		}
+		// 	})
+		// } else {
+		// 	return res.status(403).send({
+		// 		success: false,
+		// 		message: 'Nenhum token enviado'
+		// 	});
+		// }
 	}
 });
 
