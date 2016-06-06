@@ -18,7 +18,12 @@ ArchiveController.prototype.insert = function (idUser,_archive,callback) {
             fs.readFile('./uploads/'+_archive.filename, function (error, data) {
                 data = new Buffer(data).toString('base64');
                 if(error){
-                    callback(null,error);
+                    if(error.code==1001){
+                        callback(null,{error:"Arquivo já existe"});
+                    }
+                    else{
+                        callback(null,error);
+                    }   
                 }
                 else{
                     archive.archive = data;
