@@ -103,4 +103,41 @@ router.route('/:id/image').get(function (req,res) {
     })
 });
 
+/*----------------opinion-------------------*/
+router.route('/:id/opinions').post(function (req, res) {
+    doctorController.insertOpinion(req.params.id, req.body, function (opinion, error) {
+        if (error) {
+            res.status(404);
+            res.send(error);
+        } else {
+        	res.status(200);
+            res.json(opinion);
+        }
+    });
+});
+
+router.route('/:id/opinions').get(function (req, res) {
+	doctorController.getAllOpinionsById(req.params.id, function (opinion, error) {
+		if(error){
+            res.status(404);
+            res.send(error);
+        }else{
+            res.status(200);
+            res.json(opinion);
+        }
+	});
+});
+
+router.route('/:id/opinions/summary').get(function (req, res) {
+	doctorController.getSummaryRatings(req.params.id, function (opinion, error) {
+		if(error){
+            res.status(404);
+            res.send(error);
+        }else{
+            res.status(200);
+            res.json(opinion);
+        }
+	});
+});
+
 module.exports = router;

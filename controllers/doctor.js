@@ -60,6 +60,84 @@ DoctorController.prototype.findName = function(name, callback) {
 	});
 };
 
+/* --------------------------Opinion--------------------------------*/
+DoctorController.prototype.insertOpinion = function (doctorId, _opinion, callback) {
+	Doctor.findOne({ _id: doctorId }, function (error, doctor) {
+		if (error) {
+			callback(null, error);
+		} else {
+			if (doctor) {
+				var opinion = {
+					generalRating: (parseFloat(_opinion.punctualityRating) + parseFloat(_opinion.attentionRating) + parseFloat(_opinion.installationRating)) / 3,
+					punctualityRating: _opinion.punctualityRating,
+					attentionRating: _opinion.attentionRating,
+					installationRating: _opinion.installationRating,
+					comment : _opinion.comment 
+				}
+				doctor.opinions.push(opinion);
+				
+				doctor.save(function (error) {
+                    if(error){
+                        callback({ success : "false" })
+                    }else{
+                        callback({ success: "true" })
+                    }
+                })
+			}
+		}
+	});
+}
+
+DoctorController.prototype.getAllOpinionsById = function (doctorId, callback) {
+	Doctor.findOne({ _id: doctorId }, function (error, doctor) {
+		if (error) {
+			callback(null, error);
+		} else {
+			if (doctor) {
+				callback(doctor.opinions);
+			}
+		}
+	});
+}
+
+DoctorController.prototype.getSummaryRatings = function (doctorId, callback) {
+	Doctor.findOne({ _id: doctorId }, function (error, doctor) {
+		if (error) {
+			callback(null, error);
+		} else {
+			if (doctor) {
+				var generalRatingMean = 0;
+				var punctualityRatingMean = 0;
+				var attentionRatingMean = 0;
+				var installationsRatingMean = 0;
+				var optionsLength = doctor.opinions.length;
+
+				for (var i = 0; i < doctor.opinions.length; i++) {
+					generalRatingMean += doctor.opinions[i].generalRating;
+					punctualityRatingMean += doctor.opinions[i].punctualityRating;
+					attentionRatingMean += doctor.opinions[i].attentionRating;
+					installationsRatingMean += doctor.opinions[i].installationRating;
+				}
+
+				generalRatingMean /= optionsLength;
+				punctualityRatingMean /= optionsLength;
+				attentionRatingMean /= optionsLength;
+				installationsRatingMean /= optionsLength;
+
+				var opinionsMean = {
+					generalRating: generalRatingMean,
+					punctualityRating: punctualityRatingMean,
+					attentionRating: attentionRatingMean,
+					installationRating: installationsRatingMean,
+					numberOfEvaluations: optionsLength
+				}
+
+				callback(opinionsMean);
+			}
+		}
+	});
+}
+
 DoctorController.prototype.insert = function (_doctor, callback) {
 	var doctor = new Doctor();
 	doctor._id = _doctor._id;

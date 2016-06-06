@@ -37,7 +37,8 @@ var DoctorSchema = new Schema({
     },
     profileImage:{
         type : String
-    }
+    },
+    opinions : [{generalRating : Number, punctualityRating: Number, attentionRating: Number, installationRating: Number, comment : String }]
 });
 
 module.exports = mongoose.model('doctor', DoctorSchema);
