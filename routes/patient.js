@@ -5,6 +5,9 @@ var multer = require('multer');
 var PatientController = require('../controllers/patient');
 var patientController = new PatientController();
 
+var PrescriptionController = require('../controllers/prescription');
+var prescription = new PrescriptionController();
+
 var UserController = require('../controllers/user');
 var userController = new UserController();
 
@@ -129,5 +132,51 @@ router.route('/:id/bodyparts/:idProblem').put(function (req, res) {
 
     });
 });
+/*--- Routes Prescription--*/
+router.route('/:idPatient/prescriptions').get(function (req,res) {
+    prescription.prescriptionGetAll(req.params.idPatient,function (prescriptions, error) {
+        if(error){
+            res.status(404);
+            res.send(error);
+        }else{
+            res.status(200);
+            res.json(prescriptions);
+        }
+    })
+});
+router.route('/:idPatient/prescriptions/:idPrescription').get(function (req,res) {
+    prescription.prescriptionGetId(req.params.idPatient,req.params.idPrescription,function (prescriptions, error) {
+        if(error){
+            res.status(404);
+            res.send(error);
+        }else{
+            res.status(200);
+            res.json(prescriptions);
+        }
+    })
+});
+router.route('/:idPatient/prescriptions').post(function (req, res) {
+    prescription.prescriptionInsert(req.params.idPatient, req.body, function (result, error) {
+        if (error) {
+            res.status(404);
+            res.send(error);
+        } else {
+            res.json(result);
+        }
 
+    });
+});
+
+router.route('/:idPatient/prescriptions/:idPrescription').put(function (req, res) {
+    prescription.prescriptionUpdate(req.params.idPatient,req.params.idPrescription, req.body, function (result, error) {
+        if (error) {
+            res.status(404);
+            res.send(error);
+        } else {
+            res.json(result);
+        }
+
+    });
+});
+/*--- END Routes Prescription--*/
 module.exports = router;
