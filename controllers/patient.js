@@ -204,6 +204,22 @@ PatientController.prototype.updateImage = function (id, _image, callback) {
     });
 };
 
+PatientController.prototype.delete = function(id, callback) {
+    User.remove({ _id: id }, function (error) {
+        if (error) {
+            callback(null, { error: 'ID inválido.' });
+        } else {
+            Patient.remove({_id: id},function (error, user) {
+                if(error){
+                    callback(null, error);
+                }else{
+                    callback({ message: 'Removido com sucesso.' });
+                }
+            })
+        }
+    });
+};
+
 /* --------------------------bodyPart--------------------------------*/
 PatientController.prototype.getBodyPartById = function (idUser, callback) {
     Patient.findOne({ _id: idUser },function (error, patient) {

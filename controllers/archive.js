@@ -11,7 +11,6 @@ ArchiveController.prototype.insert = function (idUser,_archive,callback) {
     var userController = new UserController;
     var archive = new Archive();
     archive._id = idUser;
-
     userController.getForId(idUser, function (user, error) {
         if (error) {
             callback({error: 'Id inválido.'});
@@ -23,6 +22,7 @@ ArchiveController.prototype.insert = function (idUser,_archive,callback) {
                 }
                 else{
                     archive.archive = data;
+                    archive.idUser = idUser;
                     archive.save(function (error) {
                         if (error) {
                             fs.unlink('./uploads/'+_archive.filename);

@@ -2,7 +2,7 @@ var mongoose = require('mongoose');
 var Schema = mongoose.Schema;
 
 var ArchiveSchema = new Schema({
-    user :{
+    idUser :{
         type : String
     },
     archive :{

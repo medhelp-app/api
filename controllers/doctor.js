@@ -264,6 +264,22 @@ DoctorController.prototype.getForIdImage = function (idUser, callback) {
     })
 };
 
+DoctorController.prototype.delete = function(id, callback) {
+	User.remove({ _id: id }, function (error) {
+		if (error) {
+			callback(null, { error: 'ID inválido.' });
+		} else {
+			Doctor.remove({_id: id},function (error, user) {
+				if(error){
+					callback(null, error);
+				}else{
+					callback({ message: 'Removido com sucesso.' });
+				}
+			})
+		}
+	});
+};
+
 /*DoctorController.prototype.updateImage = function (id, _image, callback) {
     var userController = new UserController();
     var functions = this.functions;

@@ -2,7 +2,6 @@ var morgan = require('morgan');
 var express = require('express');
 var bodyParser = require('body-parser');
 var fs = require('fs');
-var multer = require('multer');
 
 var cors = require('cors');
 var jwt = require('jsonwebtoken');
@@ -20,7 +19,6 @@ app.use(cors());
 app.use(bodyParser.urlencoded({ extended: true }));
 app.use(bodyParser.json());
 
-app.use('/uploads', express.static('uploads'));
 /*app.use(function(req, res, next) {
 	res.header("Access-Control-Allow-Origin", "*");
 	res.header("Access-Control-Allow-Headers", "Origin, X-Requested-With, Content-Type, Accept");
