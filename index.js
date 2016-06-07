@@ -2,6 +2,7 @@ var morgan = require('morgan');
 var express = require('express');
 var bodyParser = require('body-parser');
 var fs = require('fs');
+var multer = require('multer');
 
 var cors = require('cors');
 var jwt = require('jsonwebtoken');
@@ -19,6 +20,7 @@ app.use(cors());
 app.use(bodyParser.urlencoded({ extended: true }));
 app.use(bodyParser.json());
 
+app.use('/uploads', express.static('uploads'));
 /*app.use(function(req, res, next) {
 	res.header("Access-Control-Allow-Origin", "*");
 	res.header("Access-Control-Allow-Headers", "Origin, X-Requested-With, Content-Type, Accept");
@@ -33,24 +35,24 @@ app.use(function (req, res, next) {
 	} else {
 		var token = req.body.token  || req.query.token || req.headers['x-access-token'];
 
-		// if (token) {
-		// 	jwt.verify(token, global.getSuperSecret, function (error, decoded) {
-		// 		if (error) {
-		// 			return res.json({
-		// 				success: false,
-		// 				message: 'Token inválido'
-		// 			});
-		// 		} else {
-		// 			req.decoded = decoded;
-		// 			next();
-		// 		}
-		// 	})
-		// } else {
-		// 	return res.status(403).send({
-		// 		success: false,
-		// 		message: 'Nenhum token enviado'
-		// 	});
-		// }
+		if (token) {
+			jwt.verify(token, global.getSuperSecret, function (error, decoded) {
+				if (error) {
+					return res.json({
+						success: false,
+						message: 'Token inválido'
+					});
+				} else {
+					req.decoded = decoded;
+					next();
+				}
+			})
+		} else {
+			return res.status(403).send({
+				success: false,
+				message: 'Nenhum token enviado'
+			});
+		}
 	}
 });
 
