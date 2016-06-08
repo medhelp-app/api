@@ -72,7 +72,7 @@ PrescriptionController.prototype.prescriptionInsert = function (_patientId,body,
                                 if (error) {
                                     callback(null, error);
                                 } else {
-                                    callback(result);
+                                    callback({success: 'true'});
                                 }
                             })
                         }else{
@@ -118,7 +118,7 @@ PrescriptionController.prototype.prescriptionUpdate = function (_patientId,_pres
                                             if (err){
                                                 callback(err);
                                             }else{
-                                                callback(tank);
+                                                callback({success: 'true'});
                                             }
                                         });
                                     }
