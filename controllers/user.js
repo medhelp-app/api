@@ -5,7 +5,16 @@ var Doctor = require('../models/doctor');
 var sha512 = require('sha512');
 var fs = require('fs');
 var nodemailer = require('nodemailer');
-var transporter = nodemailer.createTransport('smtps://appmedhelp@gmail.com:medhelp123@smtp.gmail.com');
+
+var smtpTransport = require('nodemailer-smtp-transport');
+
+var transporter = nodemailer.createTransport(smtpTransport({
+    service: 'gmail',
+    auth: {
+        user: 'medhelp.noreply@gmail.com',
+        pass: 'medhelp123'
+    }
+}));
 
 function UserController () {
 	this.functions = new Functions();
@@ -92,11 +101,11 @@ UserController.prototype.insert = function(_user, callback) {
 									user.password = sha512(_user.password).toString('hex');
 									user.save(function (error, _user) {
 										var mailOptions = {
-										    from: '"'+_user.name+' 👥" <'+_user.email+'>',
-										    to: 'appmedhelp@gmail.com, appmedhelp@gmail.com',
+										    from: '"MedHelp Time" <medhelp.noreply@gmail.com>',
+										    to: _user.email,
 										    subject: 'Bem Vindo ao Medhelp',
 										   	text: 'Bem Vindo ao Medhelp',
-										    html: '<b><h2>Bem Vindo ao Medhelp</h2></b>'
+										    html: '<html xmlns="http://www.w3.org/1999/xhtml" xmlns="http://www.w3.org/1999/xhtml"><head> <meta http-equiv="Content-Type" content="text/html; charset=utf-8" /> <meta name="viewport" content="width=device-width" /> <!-- For development, pass document through inliner --> </head><body style="margin: 0;padding: 0;font-size: 100%;font-family: &quot;Avenir Next&quot;, &quot;Helvetica Neue&quot;, &quot;Helvetica&quot;, Helvetica, Arial, sans-serif;line-height: 1.65;width: 100% !important;height: 100%;background: #efefef;-webkit-font-smoothing: antialiased;-webkit-text-size-adjust: none"><table class="body-wrap" style="margin: 0;padding: 0;font-size: 100%;font-family: &quot;Avenir Next&quot;, &quot;Helvetica Neue&quot;, &quot;Helvetica&quot;, Helvetica, Arial, sans-serif;line-height: 1.65;width: 100% !important;height: 100%;background: #efefef;-webkit-font-smoothing: antialiased;-webkit-text-size-adjust: none"> <tr style="margin: 0;padding: 0;font-size: 100%;font-family: &quot;Avenir Next&quot;, &quot;Helvetica Neue&quot;, &quot;Helvetica&quot;, Helvetica, Arial, sans-serif;line-height: 1.65"> <td class="container" style="margin: 0 auto !important;padding: 0;font-size: 100%;font-family: &quot;Avenir Next&quot;, &quot;Helvetica Neue&quot;, &quot;Helvetica&quot;, Helvetica, Arial, sans-serif;line-height: 1.65;display: block !important;clear: both !important;max-width: 580px !important"> <!-- Message start --> <table style="margin: 0;padding: 0;font-size: 100%;font-family: &quot;Avenir Next&quot;, &quot;Helvetica Neue&quot;, &quot;Helvetica&quot;, Helvetica, Arial, sans-serif;line-height: 1.65;width: 100% !important;border-collapse: collapse"> <tr style="margin: 0;padding: 0;font-size: 100%;font-family: &quot;Avenir Next&quot;, &quot;Helvetica Neue&quot;, &quot;Helvetica&quot;, Helvetica, Arial, sans-serif;line-height: 1.65"> <td align="center" class="masthead" style="margin: 0;padding: 80px 0;font-size: 100%;font-family: &quot;Avenir Next&quot;, &quot;Helvetica Neue&quot;, &quot;Helvetica&quot;, Helvetica, Arial, sans-serif;line-height: 1.65;background: #020590;color: white"> <h1 style="margin: 0 auto !important;padding: 0;font-size: 32px;font-family: &quot;Avenir Next&quot;, &quot;Helvetica Neue&quot;, &quot;Helvetica&quot;, Helvetica, Arial, sans-serif;line-height: 1.25;margin-bottom: 20px;max-width: 90%;text-transform: uppercase">Bem vindo ao Medhelp</h1> </td> </tr> <tr style="margin: 0;padding: 0;font-size: 100%;font-family: &quot;Avenir Next&quot;, &quot;Helvetica Neue&quot;, &quot;Helvetica&quot;, Helvetica, Arial, sans-serif;line-height: 1.65"> <td class="content" style="margin: 0;padding: 30px 35px;font-size: 100%;font-family: &quot;Avenir Next&quot;, &quot;Helvetica Neue&quot;, &quot;Helvetica&quot;, Helvetica, Arial, sans-serif;line-height: 1.65;background: white"> <h2 style="margin: 0;padding: 0;font-size: 28px;font-family: &quot;Avenir Next&quot;, &quot;Helvetica Neue&quot;, &quot;Helvetica&quot;, Helvetica, Arial, sans-serif;line-height: 1.25;margin-bottom: 20px">Olá, você agora faz parte do MedHelp</h2> <p style="margin: 0;padding: 0;font-size: 16px;font-family: &quot;Avenir Next&quot;, &quot;Helvetica Neue&quot;, &quot;Helvetica&quot;, Helvetica, Arial, sans-serif;line-height: 1.65;font-weight: normal;margin-bottom: 20px">MedHelp é uma solução para facilitar na comunicação entre os pacientes e médicos.</p> <table style="margin: 0;padding: 0;font-size: 100%;font-family: &quot;Avenir Next&quot;, &quot;Helvetica Neue&quot;, &quot;Helvetica&quot;, Helvetica, Arial, sans-serif;line-height: 1.65;width: 100% !important;border-collapse: collapse"> <tr style="margin: 0;padding: 0;font-size: 100%;font-family: &quot;Avenir Next&quot;, &quot;Helvetica Neue&quot;, &quot;Helvetica&quot;, Helvetica, Arial, sans-serif;line-height: 1.65"> <td align="center" style="margin: 0;padding: 0;font-size: 100%;font-family: &quot;Avenir Next&quot;, &quot;Helvetica Neue&quot;, &quot;Helvetica&quot;, Helvetica, Arial, sans-serif;line-height: 1.65"> <p style="margin: 0;padding: 0;font-size: 16px;font-family: &quot;Avenir Next&quot;, &quot;Helvetica Neue&quot;, &quot;Helvetica&quot;, Helvetica, Arial, sans-serif;line-height: 1.65;font-weight: normal;margin-bottom: 20px"> <a href="#" class="button" style="margin: 0;padding: 0;font-size: 100%;font-family: &quot;Avenir Next&quot;, &quot;Helvetica Neue&quot;, &quot;Helvetica&quot;, Helvetica, Arial, sans-serif;line-height: 1.65;color: white;text-decoration: none;display: inline-block;background: #020590;border: solid #020590;border-width: 10px 20px 8px;font-weight: bold;border-radius: 4px">Acesse sua conta</a> </p> </td> </tr> </table> </td> </tr> </table> </td> </tr> <tr style="margin: 0;padding: 0;font-size: 100%;font-family: &quot;Avenir Next&quot;, &quot;Helvetica Neue&quot;, &quot;Helvetica&quot;, Helvetica, Arial, sans-serif;line-height: 1.65"> <td class="container" style="margin: 0 auto !important;padding: 0;font-size: 100%;font-family: &quot;Avenir Next&quot;, &quot;Helvetica Neue&quot;, &quot;Helvetica&quot;, Helvetica, Arial, sans-serif;line-height: 1.65;display: block !important;clear: both !important;max-width: 580px !important"> <!-- Message start --> <table style="margin: 0;padding: 0;font-size: 100%;font-family: &quot;Avenir Next&quot;, &quot;Helvetica Neue&quot;, &quot;Helvetica&quot;, Helvetica, Arial, sans-serif;line-height: 1.65;width: 100% !important;border-collapse: collapse"> <tr style="margin: 0;padding: 0;font-size: 100%;font-family: &quot;Avenir Next&quot;, &quot;Helvetica Neue&quot;, &quot;Helvetica&quot;, Helvetica, Arial, sans-serif;line-height: 1.65"> <td class="content footer" align="center" style="margin: 0;padding: 30px 35px;font-size: 100%;font-family: &quot;Avenir Next&quot;, &quot;Helvetica Neue&quot;, &quot;Helvetica&quot;, Helvetica, Arial, sans-serif;line-height: 1.65;background: none"> <p style="margin: 0;padding: 0;font-size: 14px;font-family: &quot;Avenir Next&quot;, &quot;Helvetica Neue&quot;, &quot;Helvetica&quot;, Helvetica, Arial, sans-serif;line-height: 1.65;font-weight: normal;margin-bottom: 0;color: #888;text-align: center">Enviado por <a href="http://medhelp-app.github.io/" style="margin: 0;padding: 0;font-size: 100%;font-family: &quot;Avenir Next&quot;, &quot;Helvetica Neue&quot;, &quot;Helvetica&quot;, Helvetica, Arial, sans-serif;line-height: 1.65;color: #888;text-decoration: none;font-weight: bold">MedHelp</a></p> </td> </tr> </table> </td> </tr></table></body></html>'
 										};
 										if (error) {
 											callback(null, error);
@@ -123,6 +132,7 @@ UserController.prototype.insert = function(_user, callback) {
 														        callback(null,error);
 														    }
 														    else{
+														    	console.log("funfou");
 														    	callback(_user);
 														    }
 														});	
