@@ -8,6 +8,9 @@ var doctorController = new DoctorController();
 var AvailabilityDoctorController = require('../controllers/availabilityDoctor');
 var availabilityDoctorController  = new AvailabilityDoctorController();
 
+var AppointmentController = require('../controllers/appointment');
+var appointmentController = new AppointmentController();
+
 var UserController = require('../controllers/user');
 var userController = new UserController();
 
@@ -128,6 +131,7 @@ router.route('/:id/opinions/summary').get(function (req, res) {
         }
 	});
 });
+
 /*---Routes of AvailabilityDoctor--*/
 // informa o id do doctor, retorna array de availabilityDoctor
 router.route('/:id/availability').get(function (req,res) {
@@ -141,6 +145,7 @@ router.route('/:id/availability').get(function (req,res) {
 		}
 	})
 });
+
 // informa o id da availabilityDoctor, retorna um availabilityDoctor
 router.route('/availability/:id').get(function (req,res) {
 	availabilityDoctorController.getAvailability(req.params.id,function (availability, error) {
@@ -153,6 +158,7 @@ router.route('/availability/:id').get(function (req,res) {
 		}
 	})
 });
+
 // informa o id do doctor e no body(weekday,startHour,endHour) para cadastrar um availabilityDoctore
 //weekday pode receber uma das seguintes Strings ['sunday', 'monday','tuesday','wednesday', 'thursday','friday','saturday']
 //O formato para startHour e endHour é hh:mm
@@ -167,6 +173,7 @@ router.route('/:id/availability').post(function (req,res) {
 		}
 	})
 });
+
 //informa o id da availabilityDoctor para atualizar
 // paramentros: {weekday: '', startHour:'', endHour:''}
 router.route('/availability/:id').put(function (req,res) {
@@ -180,6 +187,7 @@ router.route('/availability/:id').put(function (req,res) {
 		}
 	})
 });
+
 //informa o id da availabilityDoctor para remover
 router.route('/availability/:id').delete(function (req,res) {
 	availabilityDoctorController.removeAvailability(req.params.id,function (result, error) {
@@ -195,4 +203,33 @@ router.route('/availability/:id').delete(function (req,res) {
 
 
 /*---End Routes of AvailabilityDoctor--*/
+
+/* --- ROTAS APPOINTMENTS --- */
+
+router.route('/:id/appointments').post(function (req, res) {
+	appointmentController.insert(req.params.id, req.body, function (result, error) {
+		if(error){
+			res.status(404);
+			res.send(error);
+		}else{
+			res.status(200);
+			res.json(result);
+		}
+	})
+});
+
+router.route('/:id/appointments').get(function (req, res) {
+	appointmentController.getDoctors(req.params.id, function (result, error) {
+		if(error){
+			res.status(404);
+			res.send(error);
+		}else{
+			res.status(200);
+			res.json(result);
+		}
+	})
+});
+
+/* --- ROTAS APPOINTMENTS --- */
+
 module.exports = router;

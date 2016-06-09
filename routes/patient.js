@@ -11,6 +11,9 @@ var prescription = new PrescriptionController();
 var UserController = require('../controllers/user');
 var userController = new UserController();
 
+var AppointmentController = require('../controllers/appointment');
+var appointmentController = new AppointmentController();
+
 router.route('/').get(function (req, res) {
     patientController.getAll(function (patients, error) {
         if (error) {
@@ -179,4 +182,19 @@ router.route('/:idPatient/prescriptions/:idPrescription').put(function (req, res
     });
 });
 /*--- END Routes Prescription--*/
+
+/* --- ROTAS APPOINTMENTS --- */
+router.route('/:id/appointments').get(function (req, res) {
+    appointmentController.getPatients(req.params.id, function (result, error) {
+        if(error){
+            res.status(404);
+            res.send(error);
+        }else{
+            res.status(200);
+            res.json(result);
+        }
+    })
+});
+/* --- ROTAS APPOINTMENTS --- */
+
 module.exports = router;
