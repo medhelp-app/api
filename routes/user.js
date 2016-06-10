@@ -67,4 +67,35 @@ router.route('/:id').put(function (req, res) {
 
 	});
 });
+
+router.route('/:id/password/forgottenPassword').get(function (req, res) {
+	userController.forgottenPassword_sendToken(req.params.id,function (result, error) {
+		if (error) {
+			res.status(404);
+			res.send(error);
+		} else {
+			res.json(result);
+		}
+	});
+});
+router.route('/:id/password/').put(function (req, res) {
+	userController.updatePassword(req.params.id, req.body,function (result, error) {
+		if (error) {
+			res.status(404);
+			res.send(error);
+		} else {
+			res.json(result);
+		}
+	});
+});
+router.route('/:id/password/forgottenPassword').put(function (req, res) {
+	userController.forgottenPassword(req.params.id,req.body,function (result, error) {
+		if (error) {
+			res.status(404);
+			res.send(error);
+		} else {
+			res.json(result);
+		}
+	});
+});
 module.exports = router;
