@@ -26,12 +26,13 @@
     "body-parser": "^1.15.0",
     "cors": "^2.7.1",
     "express": "^4.13.4",
+    "jsonfile": "^2.3.1",
     "jsonwebtoken": "^6.2.0",
     "mongoose": "^4.4.12",
     "morgan": "^1.7.0",
+    "multer": "^1.1.0",
     "sha512": "0.0.1",
-    "xmlhttprequest": "^1.8.0",
-    "multer": "^1.1.0"
+    "xmlhttprequest": "^1.8.0"
   },
   "devDependencies": {
     "chai": "^3.5.0",
