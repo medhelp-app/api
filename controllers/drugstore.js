@@ -27,7 +27,7 @@ DrugstoreController.prototype.getName = function (_name,callback) {
                 if(drugstores[i].nome.indexOf(_name) >= 0) drugstores_name.push(drugstores[i]);
             }
             if(drugstores_name.length==0){
-                callback(null,{error:"Não existe farmácias com esse nome"})
+                callback(null,{error:"Não existe farmácia com esse nome"})
             }
             else{
                 callback(drugstores_name);
@@ -73,7 +73,7 @@ DrugstoreController.prototype.getCity = function (_state,_city,callback) {
                     if(drugstores[i].name!="" && drugstores[i].cidade==_city && drugstores[i].estado==_state) drugstores_city.push(drugstores[i]);
                 }
                 if(drugstores_city.length==0){
-                    callback(null,{error:"Não existe farmácias nessa cidade"})
+                    callback(null,{error:"Não existe farmácia nessa cidade"})
                 }
                 else{
                     callback(drugstores_city);
@@ -104,7 +104,7 @@ DrugstoreController.prototype.getDistrict = function (_state,_city,_district,cal
                     if(drugstores[i].name!="" && drugstores[i].bairro==_district && drugstores[i].cidade==_city && drugstores[i].estado==_state) drugstores_district.push(drugstores[i]);
                 }
                 if(drugstores_district.length==0){
-                    callback(null,{error:"Não existe farmácias nesse bairro"})
+                    callback(null,{error:"Não existe farmácia nesse bairro"})
                 }
                 else{
                     callback(drugstores_district);
