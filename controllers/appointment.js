@@ -1,6 +1,7 @@
 var Appointment = require('../models/appointment');
 var Doctor = require('../models/doctor');
 var Patient = require('../models/patient');
+var User = require('../models/user');
 
 function AppointmentController() {
 
@@ -40,11 +41,35 @@ AppointmentController.prototype.getDoctors = function(_doctorId, callback) {
             if (doctors.length === 0) {
                 callback({error: "Médico não existe."});
             } else {
-                Appointment.find({ doctorId : _doctorId}).populate('availabilityId').exec(function (error, availability ) {
+                Appointment.find({ doctorId : _doctorId}).populate('availabilityId').populate('patientId').exec(function (error, availability ) {
                     if (error) {
                         callback(error);
                     } else {
-                        callback(availability)
+                        var availabilities = [];
+
+                        if (availability.length > 0) {
+                            load(0);
+
+                            function load (i) {
+                                User.find({ _id: availability[i].patientId }, function (error, user) {
+                                    var av = {
+                                        "_id": availability[i]._id,
+                                        "date": availability[i].date,
+                                        "availabilityId": availability[i].availabilityId,
+                                        "patientId": availability[i].patientId._id,
+                                        "profileImage": availability[i].patientId.profileImage,
+                                        "doctorId": availability[i].doctorId,
+                                        "user": user[0]
+                                    };
+
+                                    availabilities.push(av);
+                                    if (i + i < availability.length)
+                                        load(i + 1);
+                                    else
+                                        callback(availabilities);
+                                });
+                            }
+                        }
                     }
                 });
             }

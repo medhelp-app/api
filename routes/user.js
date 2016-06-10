@@ -17,6 +17,17 @@ router.route('/').get(function (req, res) {
 	});
 });
 
+router.route('/:id').get(function (req, res) {
+	userController.getForId(req.params.id, function (users, error) {
+		if (error) {
+			res.status(404);
+			res.send(error);
+		} else {
+			res.json(users);
+		}
+	});
+});
+
 router.route('/').post(function (req, res) {	
 	userController.insert(req.body, function (user, error) {
 		if (error) {
