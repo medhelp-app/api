@@ -68,8 +68,8 @@ router.route('/:id').put(function (req, res) {
 	});
 });
 
-router.route('/:id/password/forgottenPassword').get(function (req, res) {
-	userController.forgottenPassword_sendToken(req.params.id,function (result, error) {
+router.route('/:email/password/forgottenPassword').get(function (req, res) {
+	userController.forgottenPassword_sendToken(req.params.email,function (result, error) {
 		if (error) {
 			res.status(404);
 			res.send(error);
