@@ -85,11 +85,35 @@ AppointmentController.prototype.getPatients = function(_patientId, callback) {
             if (doctors.length === 0) {
                 callback({error: "Paciente não existe."});
             } else {
-                Appointment.find({ patientId : _patientId }).populate('availabilityId').exec(function (error, availability ) {
+                Appointment.find({ patientId : _patientId }).populate('availabilityId').populate('doctorId').exec(function (error, availability ) {
                     if (error) {
                         callback(error);
                     } else {
-                        callback(availability)
+                        var availabilities = [];
+
+                        if (availability.length > 0) {
+                            load(0);
+
+                            function load (i) {
+                                User.find({ _id: availability[i].doctorId }, function (error, user) {
+                                    var av = {
+                                        "_id": availability[i]._id,
+                                        "date": availability[i].date,
+                                        "availabilityId": availability[i].availabilityId,
+                                        "patientId": availability[i].patientId._id,
+                                        "profileImage": availability[i].doctorId.profileImage,
+                                        "doctorId": availability[i].doctorId,
+                                        "user": user[0]
+                                    };
+
+                                    availabilities.push(av);
+                                    if (i + i < availability.length)
+                                        load(i + 1);
+                                    else
+                                        callback(availabilities);
+                                });
+                            }
+                        }
                     }
                 });
             }
