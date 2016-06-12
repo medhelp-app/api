@@ -102,15 +102,4 @@ router.route('/comment/:idPublication/:idUser').delete(function (req, res) {
 	});
 });
 
-router.route('/comment').put(function (req, res) {
-	commentController.update(req.body, function (comment, error) {
-		if (error) {
-			res.status(404);
-			res.send(error);
-		} else {
-			res.json(comment);
-		}
-	});
-});
-
 module.exports = router;

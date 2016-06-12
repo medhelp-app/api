@@ -5,35 +5,30 @@ function CommentController () {
 }
 
 CommentController.prototype.insert = function(_comment, callback) {
-	Comment.findOne({idUser: _comment.idUser},{idPublication: _comment.idPublication}, function(error,result) {
+	Comment.findOne({idUser: _comment.idUser,idPublication: _comment.idPublication}, function(error,result) {
 		if(error){
 			callback(null,error);
 		}
 		else{
-			if(!result){
-				var vote = new Vote();
-				vote.idUser = _vote.idUser;
-				vote.idPublication = _vote.idPublication;
-				vote.type = _vote.type;
-				vote.date = _vote.date;
-				vote.save(function (error,vote) {
-					if(error){
-						callback(null,error);
-					}
-					else{
-						callback({success:"ok"})
-					}
-				});
-			}
-			else{
-				callback(null,{error:"Esse usuário já votou nessa publicação"});
-			}
+			var comment = new Comment();
+			comment.idUser = _comment.idUser;
+			comment.idPublication = _comment.idPublication;
+			comment.text = _comment.text;
+			comment.date = _comment.date;
+			comment.save(function (error,comment) {
+				if(error){
+					callback(null,error);
+				}
+				else{
+					callback({success:"ok"})
+				}
+			});
 		}
 	});
 };
 
 CommentController.prototype.delete = function(_idPublication, _idUser, callback) {
-	Comment.findOne({idUser: _idUser},{idPublication: _idPublication}, function(error,comment) {
+	Comment.findOne({idUser: _idUser, idPublication: _idPublication}, function(error,comment) {
 		if(error){
 			callback(null, error);
 		}
@@ -48,7 +43,7 @@ CommentController.prototype.delete = function(_idPublication, _idUser, callback)
 				});
 			}
 			else{
-				callback(null, {error:"Esse usuário não votou nessa publicação"});
+				callback(null, {error:"Esse usuário não comentou nessa publicação"});
 			}
 		}
 	});
