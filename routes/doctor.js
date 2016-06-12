@@ -231,5 +231,39 @@ router.route('/:id/appointments').get(function (req, res) {
 });
 
 /* --- ROTAS APPOINTMENTS --- */
-
+/*--- HealthInsurance--*/
+router.route('/:id/healthInsurance').post(function (req, res) {
+	doctorController.insertHealthInsurance(req.params.id, req.body,function (result, error) {
+		if(error){
+			res.status(404);
+			res.send(error);
+		}else{
+			res.status(200);
+			res.json(result);
+		}
+	})
+});
+router.route('/:id/healthInsurance').get(function (req, res) {
+	doctorController.getHealthInsurance(req.params.id,function (result, error) {
+		if(error){
+			res.status(404);
+			res.send(error);
+		}else{
+			res.status(200);
+			res.json(result);
+		}
+	})
+});
+router.route('/:idDoctor/healthInsurance/:id').delete(function (req, res) {
+	doctorController.deleteHealthInsurance(req.params.idDoctor, req.params.id,function (result, error) {
+		if(error){
+			res.status(404);
+			res.send(error);
+		}else{
+			res.status(200);
+			res.json(result);
+		}
+	})
+});
+/*---END HealthInsurance--*/
 module.exports = router;

@@ -60,6 +60,82 @@ DoctorController.prototype.findName = function(name, callback) {
 	});
 };
 
+/*--------------------HealthInsurance------------------*/
+DoctorController.prototype.insertHealthInsurance = function (id, body, callback) {
+	Doctor.findById(id, function (err, doctor) {
+		if(err){
+			callback({error: 'Error ao encontrar médico!'})
+		}else{
+			if(doctor){
+				doctor.healthInsurance.push({healthInsurance: body.healthInsurance});
+				doctor.save(function (err) {
+					if(err){
+						callback({error: 'Error ao atualizar!'})
+					}else{
+						callback({success: 'true'})
+					}
+				})
+			}else{
+				callback({error: 'Médico não existe!'})
+			}
+		}
+	})
+}
+DoctorController.prototype.getHealthInsurance = function (id,callback) {
+	Doctor.findById(id, function (err, doctor) {
+		if(err){
+			callback({error: 'Error ao encontrar médico!'});
+		}else{
+			if(doctor){
+				callback(doctor.healthInsurance);
+			}else{
+				callback({error: 'Médico não existe!'});
+			}
+		}
+	})
+}
+DoctorController.prototype.deleteHealthInsurance = function (id, idHealthInsurance, callback) {
+	Doctor.findById(id, function (err, doctor) {
+		if(err){
+			callback({error: 'Error ao encontrar médico!'})
+		}else{
+			if(doctor){
+				doctor.healthInsurance.id(idHealthInsurance).remove();
+				doctor.save(function (err) {
+					if(err){
+						callback({error: 'Error ao atualizar!'})
+					}else{
+						callback({success: 'true'})
+					}
+				})
+			}else{
+				callback({error: 'Médico não existe!'})
+			}
+		}
+	})
+}
+DoctorController.prototype.updateHealthInsurance = function (id, idHealthInsurance, callback) {
+	Doctor.findById(id, function (err, doctor) {
+		if(err){
+			callback({error: 'Error ao encontrar médico!'})
+		}else{
+			if(doctor){
+				doctor.healthInsurance.id(idHealthInsurance).remove();
+				doctor.save(function (err) {
+					if(err){
+						callback({error: 'Error ao atualizar!'})
+					}else{
+						callback({success: 'true'})
+					}
+				})
+			}else{
+				callback({error: 'Médico não existe!'})
+			}
+		}
+	})
+}
+/*--------------------END - HealthInsurance------------------*/
+
 /* --------------------------Opinion--------------------------------*/
 DoctorController.prototype.insertOpinion = function (doctorId, _opinion, callback) {
 	Doctor.findOne({ _id: doctorId }, function (error, doctor) {
