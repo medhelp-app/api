@@ -11,7 +11,19 @@ VoteController.prototype.insert = function(_vote, callback) {
 		}
 		else{
 			if(result){
-				callback(null,{error:"Esse usuário já votou nessa publicação"});
+				if(result.type!=_vote.type){
+					Vote.update({_id: result._id}, { $set: {type:_vote.type} }, { upsert: true }, function (error, status) {
+						if(error){
+							callback(null,error);
+						}
+						else{
+							callback({success:"ok"});
+						}
+					});
+				}
+				else{
+					callback(null,{error:"Esse usuário já votou nessa publicação"});
+				}				
 			}
 			else{
 				var vote = new Vote();
@@ -24,7 +36,7 @@ VoteController.prototype.insert = function(_vote, callback) {
 						callback(null,error);
 					}
 					else{
-						callback({success:"ok"})
+						callback({success:"ok"});
 					}
 				});
 				

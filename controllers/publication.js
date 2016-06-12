@@ -1,5 +1,6 @@
 var Doctor = require('../models/doctor');
 var User = require('../models/user');
+var Comment = require('../models/comment');
 var Publication = require('../models/publication');
 var UserController = require('../controllers/user');
 
@@ -39,7 +40,13 @@ PublicationController.prototype.getAll = function(callback) {
 		if (error) {
 			callback(null, error);
 		} else {
-			callback(publications);
+			var idPublications = [];
+			for(var i=0;i<publications.length;i++){
+				idPublications.push(publications[i]._id);
+			}
+			Comment.find({idPublication: { $in: idPublications}}).populate('idPublication').exec(function(error, result){ 
+				callback(result);
+			});
 		}
 	});
 };
