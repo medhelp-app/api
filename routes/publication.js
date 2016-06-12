@@ -4,6 +4,9 @@ var router = express.Router();
 var PublicationController = require('../controllers/publication');
 var publicationController = new PublicationController();
 
+var VoteController = require('../controllers/vote');
+var voteController = new VoteController();
+
 router.route('/').post(function (req, res) {
 	publicationController.insert(req.body,function (publications, error) {
 		if (error) {
@@ -44,6 +47,30 @@ router.route('/:id').put(function (req, res) {
 			res.send(error);
 		} else {
 			res.json(publication);
+		}
+	});
+});
+
+/*-------------------------Vote in Publication-------------------------------*/
+
+router.route('/vote').post(function (req, res) {
+	voteController.insert(req.body,function (vote, error) {
+		if (error) {
+			res.status(404);
+			res.send(error);
+		} else {
+			res.json(vote);
+		}
+	});
+});
+
+router.route('/vote/:idPublication/:idUser').delete(function (req, res) {
+	voteController.delete(req.params.idPublication, req.params.idUser, function (vote, error) {
+		if (error) {
+			res.status(404);
+			res.send(error);
+		} else {
+			res.json(vote);
 		}
 	});
 });
