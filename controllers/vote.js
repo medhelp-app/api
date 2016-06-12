@@ -16,7 +16,7 @@ VoteController.prototype.insert = function(_vote, callback) {
 			else{
 				var vote = new Vote();
 				vote.idUser = _vote.idUser;
-				vote._idPublication = _vote.idPublication;
+				vote.idPublication = _vote.idPublication;
 				vote.type = _vote.type;
 				vote.date = _vote.date;
 				vote.save(function (error,vote) {
@@ -34,7 +34,7 @@ VoteController.prototype.insert = function(_vote, callback) {
 };
 
 VoteController.prototype.delete = function(_idPublication, _idUser, callback) {
-	Vote.findOne({idUser: _idUser},{idPublication: _idPublication}, function(error,vote) {
+	Vote.findOne({idUser: _idUser,idPublication: _idPublication}, function(error,vote) {
 		if(error){
 			callback(null, error);
 		}

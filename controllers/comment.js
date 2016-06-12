@@ -13,7 +13,7 @@ CommentController.prototype.insert = function(_comment, callback) {
 			if(!result){
 				var vote = new Vote();
 				vote.idUser = _vote.idUser;
-				vote._idPublication = _vote.idPublication;
+				vote.idPublication = _vote.idPublication;
 				vote.type = _vote.type;
 				vote.date = _vote.date;
 				vote.save(function (error,vote) {
