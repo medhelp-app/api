@@ -38,6 +38,7 @@ var DoctorSchema = new Schema({
     profileImage:{
         type : String
     },
+    healthInsurance: [{healthInsurance: String}],
     opinions : [{generalRating : Number, punctualityRating: Number, attentionRating: Number, installationRating: Number, comment : String }]
 });
 

@@ -64,7 +64,8 @@ PatientController.prototype.getForId = function (idUser, callback) {
                             state: patient.state,
                             zipCode: patient.zipCode,
                             country: patient.country,
-                            phone: patient.phone
+                            phone: patient.phone,
+                            healthInsurance: patient.healthInsurance
                         }
 
                         callback(userFull);
@@ -126,7 +127,8 @@ PatientController.prototype.update = function (id, _patient, callback) {
                         state : _patient.state,
                         zipCode : _patient.zipCode,
                         country : _patient.country,
-                        phone : _patient.phone
+                        phone : _patient.phone,
+                        healthInsurance: _patient.healthInsurance
                     };
 
                     if (user.email === _patient.email) {
