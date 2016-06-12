@@ -8,8 +8,11 @@ var CommentSchema = new Schema({
     text: {
         type: String
     },
-    idUser :{
-        type : String
+    idUser: {
+        type : Schema.Types.ObjectId, ref: 'users'
+    },
+    date: {
+    	type: Date
     }
 });
 

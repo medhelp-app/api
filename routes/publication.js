@@ -7,6 +7,9 @@ var publicationController = new PublicationController();
 var VoteController = require('../controllers/vote');
 var voteController = new VoteController();
 
+var CommentController = require('../controllers/comment');
+var commentController = new CommentController();
+
 router.route('/').post(function (req, res) {
 	publicationController.insert(req.body,function (publications, error) {
 		if (error) {
@@ -71,6 +74,41 @@ router.route('/vote/:idPublication/:idUser').delete(function (req, res) {
 			res.send(error);
 		} else {
 			res.json(vote);
+		}
+	});
+});
+
+/*-------------------------Comment in Publication-------------------------------*/
+
+router.route('/comment').post(function (req, res) {
+	commentController.insert(req.body,function (comment, error) {
+		if (error) {
+			res.status(404);
+			res.send(error);
+		} else {
+			res.json(comment);
+		}
+	});
+});
+
+router.route('/comment/:idPublication/:idUser').delete(function (req, res) {
+	commentController.delete(req.params.idPublication, req.params.idUser, function (comment, error) {
+		if (error) {
+			res.status(404);
+			res.send(error);
+		} else {
+			res.json(comment);
+		}
+	});
+});
+
+router.route('/comment').put(function (req, res) {
+	commentController.update(req.body, function (comment, error) {
+		if (error) {
+			res.status(404);
+			res.send(error);
+		} else {
+			res.json(comment);
 		}
 	});
 });
