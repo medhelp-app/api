@@ -5,7 +5,7 @@ function VoteController () {
 }
 
 VoteController.prototype.insert = function(_vote, callback) {
-	Vote.findOne({idUser: _vote.idUser},{idPublication: _vote.idPublication}, function(error,result) {
+	Vote.findOne({idUser: _vote.idUser, idPublication: _vote.idPublication}, function(error,result) {
 		if(error){
 			callback(null,error);
 		}
