@@ -2,11 +2,14 @@ var mongoose = require('mongoose');
 var Schema = mongoose.Schema;
 
 var FollowSchema = new Schema({
-    idPatient :{
+    idPatient: {
         type : Schema.Types.ObjectId, ref: 'patients'
     },
-    idDoctor :{
+    idDoctor: {
          type : Schema.Types.ObjectId, ref: 'doctors'
+    },
+    date: {
+    	type: Date
     }
 });
 

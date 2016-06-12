@@ -6,6 +6,9 @@ var jwt = require('jsonwebtoken');
 var UserController = require('../controllers/user');
 var userController = new UserController();
 
+var FollowController = require('../controllers/follow');
+var followController = new FollowController();
+
 router.route('/').get(function (req, res) {
 	userController.getAll(function (users, error) {
 		if (error) {
@@ -88,6 +91,7 @@ router.route('/:id/password/').put(function (req, res) {
 		}
 	});
 });
+
 router.route('/:id/password/forgottenPassword').put(function (req, res) {
 	userController.forgottenPassword(req.params.id,req.body,function (result, error) {
 		if (error) {
@@ -98,4 +102,30 @@ router.route('/:id/password/forgottenPassword').put(function (req, res) {
 		}
 	});
 });
+
+/*-------------------------Following a Doctor-------------------------------*/
+
+router.route('/follow').post(function (req, res) {
+	followController.insert(req.body,function (result, error) {
+		if (error) {
+			res.status(404);
+			res.send(error);
+		} else {
+			res.json(result);
+		}
+	});
+});
+
+router.route('/follow/:idDoctor/:idPatient').delete(function (req, res) {
+	followController.delete(req.params.idDoctor, req.params.idPatient, function (result, error) {
+		if (error) {
+			res.status(404);
+			res.send(error);
+		} else {
+			res.json(result);
+		}
+	});
+});
+
+
 module.exports = router;
