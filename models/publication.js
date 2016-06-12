@@ -14,7 +14,9 @@ var PublicationSchema = new Schema({
     },
     date: {
     	type: Date
-    }
+    },
+    comments: [{ type: Schema.Types.ObjectId, ref: 'comment' }],
+    agree: [{ type: Schema.Types.ObjectId, ref: 'vote'}]
 });
 
 module.exports = mongoose.model('publication', PublicationSchema);

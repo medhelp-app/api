@@ -1,4 +1,5 @@
 var Comment = require('../models/comment');
+var Publication = require('../models/publication');
 
 function CommentController () {
 	
@@ -20,7 +21,7 @@ CommentController.prototype.insert = function(_comment, callback) {
 					callback(null,error);
 				}
 				else{
-					callback({success:"ok"})
+					callback({success:"ok"});
 				}
 			});
 		}

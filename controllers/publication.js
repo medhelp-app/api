@@ -19,6 +19,9 @@ PublicationController.prototype.insert = function(_publication, callback) {
 				publication.type = _publication.type;
 				publication.text = _publication.text;
 				publication.date = _publication.date;
+				publication.comments = 0;
+				publication.agree = 0;
+				publication.disagree = 0;
 				publication.save(function (error, publication) {
 					if (error) {
 						callback(null, error);
@@ -36,17 +39,11 @@ PublicationController.prototype.insert = function(_publication, callback) {
 };
 
 PublicationController.prototype.getAll = function(callback) {
-	Publication.find(function (error, publications) {
+	Publication.find().populate("comments").exec(function (error, publications) {
 		if (error) {
 			callback(null, error);
 		} else {
-			var idPublications = [];
-			for(var i=0;i<publications.length;i++){
-				idPublications.push(publications[i]._id);
-			}
-			Comment.find({idPublication: { $in: idPublications}}).populate('idPublication').exec(function(error, result){ 
-				callback(result);
-			});
+			callback(publications);
 		}
 	});
 };
@@ -75,7 +72,6 @@ PublicationController.prototype.update = function(id, _publication,callback) {
 			});
 		}
 	});
-	
 };
 
 module.exports = PublicationController;
