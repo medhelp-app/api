@@ -3,7 +3,7 @@ var Schema = mongoose.Schema;
 
 var CommentSchema = new Schema({
     idPublication :{
-        type : Schema.Types.ObjectId, ref: 'publication'
+        type : Schema.Types.ObjectId, ref: 'publications'
     },
     text: {
         type: String

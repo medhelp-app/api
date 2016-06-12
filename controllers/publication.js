@@ -39,7 +39,7 @@ PublicationController.prototype.insert = function(_publication, callback) {
 };
 
 PublicationController.prototype.getAll = function(callback) {
-	Publication.find().populate("comments").exec(function (error, publications) {
+	Publication.find().populate('comments').populate('votes').exec(function (error, publications) {
 		if (error) {
 			callback(null, error);
 		} else {
