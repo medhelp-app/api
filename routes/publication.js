@@ -56,8 +56,8 @@ router.route('/:id').put(function (req, res) {
 
 /*-------------------------Vote in Publication-------------------------------*/
 
-router.route('/vote').post(function (req, res) {
-	voteController.insert(req.body,function (vote, error) {
+router.route('/:idPublication/vote').post(function (req, res) {
+	voteController.insert(req.params.idPublication, req.body,function (vote, error) {
 		if (error) {
 			res.status(404);
 			res.send(error);
@@ -80,8 +80,8 @@ router.route('/vote/:idPublication/:idUser').delete(function (req, res) {
 
 /*-------------------------Comment in Publication-------------------------------*/
 
-router.route('/comment').post(function (req, res) {
-	commentController.insert(req.body,function (comment, error) {
+router.route('/:idPublication/comment').post(function (req, res) {
+	commentController.insert(req.params.idPublication, req.body,function (comment, error) {
 		if (error) {
 			res.status(404);
 			res.send(error);

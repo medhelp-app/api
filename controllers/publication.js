@@ -40,7 +40,27 @@ PublicationController.prototype.getAll = function(callback) {
 		if (error) {
 			callback(null, error);
 		} else {
-			callback(publications);
+			var publicationComplete = [];
+			for(var i=0;i<publications.length;i++){
+				var agree = 0;
+				var disagree = 0;
+				for(var j=0;j<publications[i].votes.length;j++){
+					if(publications[i].votes[j].type=="agree") agree+=1;
+					else disagree+=1;
+				}
+				var publication = {
+					idUser: publications[i].idUser,
+					_id: publications[i]._id,
+					type: publications[i].type,
+					text: publications[i].text,
+					date: publications[i].date,
+					comments: publications[i].comments.length,
+					agree: agree,
+					disagree: disagree
+				};
+				publicationComplete.push(publication);
+			}
+			callback(publicationComplete);
 		}
 	});
 };
