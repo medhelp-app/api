@@ -29,7 +29,7 @@ var PatientSchema = new Schema({
     _id :{
         type: Schema.Types.ObjectId, ref: 'user'
     },
-    bodyPart : [{part : String, problems: [{problem: String, description:String, severity: String, occurredDate : Date }]}]
+    bodyPart : [{part : String, problems: [{problem: String, description:String, severity: String, occurredDate : Date, resolved: Boolean}]}]
 });
 
 module.exports = mongoose.model('patient', PatientSchema);

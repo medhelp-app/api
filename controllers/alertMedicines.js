@@ -43,7 +43,7 @@ AlertMedicinesController.prototype.getForId = function (id,callback) {
             if(alert){
                 callback(alert)
             }else{
-                callback({Error: 'Paciente não existe!'})
+                callback({Error: 'Alerta não existe!'})
             }
         }
     })
