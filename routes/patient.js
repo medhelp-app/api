@@ -14,6 +14,9 @@ var userController = new UserController();
 var AppointmentController = require('../controllers/appointment');
 var appointmentController = new AppointmentController();
 
+var AlertMecicinesController = require('../controllers/alertMedicines');
+var alertMedicinesController = new AlertMecicinesController();
+
 router.route('/').get(function (req, res) {
     patientController.getAll(function (patients, error) {
         if (error) {
@@ -196,5 +199,56 @@ router.route('/:id/appointments').get(function (req, res) {
     })
 });
 /* --- ROTAS APPOINTMENTS --- */
-
+/*--- ROTAS ALERTMEDICINES ---*/
+router.route('/:id/alertMedicines').get(function (req, res) {
+    alertMedicinesController.getAll(req.params.id,function (alert, error) {
+        if (error) {
+            res.status(404);
+            res.send(error);
+        } else {
+            res.json(alert);
+        }
+    });
+});
+router.route('/alertMedicines/:id').get(function (req, res) {
+    alertMedicinesController.getForId(req.params.id,function (alert, error) {
+        if (error) {
+            res.status(404);
+            res.send(error);
+        } else {
+            res.json(alert);
+        }
+    });
+});
+router.route('/:id/alertMedicines').post(function (req, res) {
+    alertMedicinesController.insert(req.params.id,req.body, function (result, error) {
+        if (error) {
+            res.status(400);
+            res.send(error);
+        } else {
+            res.json(result);
+        }
+    });
+});
+router.route('/alertMedicines/:id').put(function (req, res) {
+    alertMedicinesController.update(req.params.id,req.body, function (result, error) {
+        if (error) {
+            res.status(400);
+            res.send(error);
+        } else {
+            res.json(result);
+        }
+    });
+});
+router.route('/alertMedicines/:id').delete(function (req, res) {
+    alertMedicinesController.excluir(req.params.id, function (result, error) {
+        if (error) {
+            res.status(400);
+            res.send(error);
+        } else {
+            res.json(result);
+        }
+    });
+});
+/*--- END ROTAS ALERTMEDICINES--*/
 module.exports = router;
