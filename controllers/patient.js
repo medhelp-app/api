@@ -57,7 +57,7 @@ PatientController.prototype.getForId = function (idUser, callback) {
                             name: user.name,
                             email: user.email,
                             userType: user.userType,
-                            profileImage: patient.profileImage,
+                            profileImage: user.profileImage,
                             addressStreet: patient.addressStreet,
                             addressNumber: patient.addressNumber,
                             city: patient.city,

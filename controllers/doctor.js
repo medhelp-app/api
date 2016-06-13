@@ -43,16 +43,20 @@ DoctorController.prototype.findName = function(name, callback) {
 			}, function(err, doctors){
 					docs = [];
 				    for (var i = 0; i < doctors.length; i++) {
-					    var doctorFull = {
-					    	_id: users[i].id,
-					    	name: users[i].name,
-					    	email: users[i].email,
-					    	doctorType: doctors[i].doctorType,
-					    	profileImage: users[i].profileImage
-					    }
-					    docs.push(doctorFull);
+				    	for(var j = 0;j < users.length; j++) {
+				    		if(doctors[i].id==users[j].id){
+				    			var doctorFull = {
+							    	_id: users[j].id,
+							    	name: users[j].name,
+							    	email: users[j].email,
+							    	doctorType: doctors[i].doctorType,
+							    	profileImage: users[j].profileImage
+							    }
+							    docs.push(doctorFull);
+							    break;
+				    		}
+				    	}
 				    }
-				    
 				    callback(docs);
 				}
 			);
@@ -265,7 +269,7 @@ DoctorController.prototype.getForId = function (idUser, callback) {
 							ufCrm: doctor.ufCrm,
 							doctorType: doctor.doctorType,
 							crmStatus: doctor.crmStatus,
-							profileImage: doctor.profileImage
+							profileImage: user.profileImage
 						}
 
 						callback(userFull);
