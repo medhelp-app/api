@@ -67,6 +67,17 @@ router.route('/:idPublication/vote').post(function (req, res) {
 	});
 });
 
+router.route('/:idPublication/vote').get(function (req, res) {
+	voteController.getPublication(req.params.idPublication, function (comment, error) {
+		if (error) {
+			res.status(404);
+			res.send(error);
+		} else {
+			res.json(comment);
+		}
+	});
+});
+
 router.route('/vote/:idPublication/:idUser').delete(function (req, res) {
 	voteController.delete(req.params.idPublication, req.params.idUser, function (vote, error) {
 		if (error) {

@@ -48,7 +48,7 @@ DoctorController.prototype.findName = function(name, callback) {
 					    	name: users[i].name,
 					    	email: users[i].email,
 					    	doctorType: doctors[i].doctorType,
-					    	profileImage: doctors[i].profileImage
+					    	profileImage: users[i].profileImage
 					    }
 					    docs.push(doctorFull);
 				    }

@@ -23,9 +23,6 @@ var PatientSchema = new Schema({
     phone :{
         type : String
     },
-    profileImage:{
-        type : String
-    },
     healthInsurance:{
         type: String
     },

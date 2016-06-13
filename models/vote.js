@@ -10,7 +10,7 @@ var VoteSchema = new Schema({
         enum: ['agree', 'disagree']
     },
     idUser : {
-        type : Schema.Types.ObjectId, ref: 'users'
+        type : Schema.Types.ObjectId, ref: 'user'
     },
     date : {
         type: Date

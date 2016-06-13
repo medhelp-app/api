@@ -35,9 +35,6 @@ var DoctorSchema = new Schema({
     crmStatus:{
         type : String
     },
-    profileImage:{
-        type : String
-    },
     _id :{
         type: Schema.Types.ObjectId, ref: 'user'
     },

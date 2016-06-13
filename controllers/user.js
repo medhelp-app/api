@@ -310,4 +310,25 @@ UserController.prototype.forgottenPassword = function (_id, body, callback) {
 		}
 	});
 }
+
+UserController.prototype.updateImage = function (id, _image, callback) {
+    fs.readFile('./uploads/'+_image.filename, function (error, data) {
+        data = new Buffer(data).toString('base64');
+        if(error){
+            callback(null,error);
+        }
+        else{
+            User.update({ _id: id }, { $set: {profileImage:data} }, { upsert: true }, function (error, status) {
+                if (error) {
+                    fs.unlink('./uploads/'+_image.filename);
+                    callback(error);
+                } else {
+                    fs.unlink('./uploads/'+_image.filename);
+                    callback({ sucess: "ok" });
+                }
+            });
+        }     
+    });             
+};
+
 module.exports = UserController;

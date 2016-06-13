@@ -1,5 +1,7 @@
 var Vote = require('../models/vote');
 var Publication = require('../models/publication');
+var Doctor = require('../models/doctor');
+var User = require('../models/user');
 
 function VoteController () {
 	
@@ -88,5 +90,43 @@ VoteController.prototype.delete = function(_idPublication, _idUser, callback) {
 		}
 	});
 };
+
+VoteController.prototype.getPublication = function(_idPublication, callback) {
+	Vote.find({idPublication: _idPublication}).populate('idUser').exec(function(error,votes) {
+		if(error){
+			callback(null,error);
+		}
+		else{
+			var idUsers = [];
+			for(var i=0;i<votes.length;i++){
+				idUsers.push(votes[i].idUser._id);
+			}
+			User.aggregate([{$match: {_id: {$in: idUsers}}},{$lookup : { from: 'doctors', localField: "_id",foreignField: "_id", as: "more"}}],function (error, result){			
+			//Doctor.find({'_id': { $in: idUsers}}).populate('_id').exec(function(error, doctors){
+				if(error){
+					callback(null,error);
+				}
+				else{
+					callback(result);
+					// var commentsTotal = [];
+					// for(var i=0;i<doctors.length;i++){
+					// 	var comment = {
+					// 		nameUser: comments[i].idUser.name,
+					// 		idUser: comments[i].idUser._id,
+					// 		_id: comments[i]._id,
+					// 		idPublication: comments[i].idPublication,
+					// 		text: comments[i].text,
+					// 		date: comments[i].date,
+					// 		imageUser: doctors[i].profileImage
+					// 	};
+					// 	commentsTotal.push(comment);
+					// }
+					// callback(commentsTotal);
+				}
+			});
+		}
+	});
+};
+
 
 module.exports = VoteController;

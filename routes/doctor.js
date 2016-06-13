@@ -71,18 +71,6 @@ router.route('/:id').put(function (req, res) {
 	});
 });
 
-router.route('/:id/image').put(multer({dest: './uploads/'}).single('profileImage'),function (req, res) {
-    doctorController.updateImage(req.params.id, req.file, function (image, error) {
-        if (error) {
-            res.status(400);
-            res.send(error);
-        } else {
-            res.json(image);
-        }
-
-    });
-});
-
 router.route('/:id/image').get(function (req,res) {
     doctorController.getForIdImage(req.params.id,function (image, error) {
         if(error){

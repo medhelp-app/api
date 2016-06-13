@@ -49,32 +49,6 @@ router.route('/:id').put(function (req, res) {
     });
 });
 
-router.route('/:id/image').put(multer({
-  dest: './uploads/',
-  rename: function (fieldname, filename) {
-    return fieldname;
-  },
-  onFileUploadStart: function (file) {
-    console.log(file.originalname + ' is starting ...')
-  },
-  limits: {
-    files: 1
-  },
-  onFileUploadComplete: function (file) {
-    console.log(file.fieldname + ' uploaded to  ' + file.path)
-  }
-}).single('profileImage'),function (req, res) {
-    patientController.updateImage(req.params.id, req.file, function (patient, error) {
-        if (error) {
-            res.status(400);
-            res.send(error);
-        } else {
-            res.json(patient);
-        }
-
-    });
-});
-
 router.route('/:id/image').get(function (req,res) {
     patientController.getForIdImage(req.params.id,function (image, error) {
         if(error){
