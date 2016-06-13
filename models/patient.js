@@ -29,6 +29,9 @@ var PatientSchema = new Schema({
     healthInsurance:{
         type: String
     },
+    _id :{
+        type: Schema.Types.ObjectId, ref: 'user'
+    },
     bodyPart : [{part : String, problems: [{problem: String, description:String, severity: String, occurredDate : Date }]}]
 });
 

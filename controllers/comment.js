@@ -1,5 +1,6 @@
 var Comment = require('../models/comment');
 var Publication = require('../models/publication');
+var Doctor = require('../models/doctor');
 
 function CommentController () {
 	
@@ -58,7 +59,6 @@ CommentController.prototype.delete = function(_idPublication, _idUser, callback)
 							if (error) {
 								callback(null, error);
 							} else {
-								publication.comments.splice(publication.comments.indexOf(comment),1);
 								publication.save(function (error, res) {
 									if (error) {
 										callback(null, error);
@@ -74,6 +74,41 @@ CommentController.prototype.delete = function(_idPublication, _idUser, callback)
 			else{
 				callback(null, {error:"Esse usuário não comentou nessa publicação"});
 			}
+		}
+	});
+};
+
+CommentController.prototype.getPublication = function(_idPublication, callback) {
+	Comment.find({idPublication: _idPublication}).populate('idUser').exec(function(error,comments) {
+		if(error){
+			callback(null,error);
+		}
+		else{
+			var idUsers = [];
+			for(var i=0;i<comments.length;i++){
+				idUsers.push(comments[i].idUser._id);
+			}
+			Doctor.find({'_id': { $in: idUsers}}).populate('_id').exec(function(error, doctors){
+				if(error){
+					callback(null,error);
+				}
+				else{
+					var commentsTotal = [];
+					for(var i=0;i<doctors.length;i++){
+						var comment = {
+							nameUser: comments[i].idUser.name,
+							idUser: comments[i].idUser._id,
+							_id: comments[i]._id,
+							idPublication: comments[i].idPublication,
+							text: comments[i].text,
+							date: comments[i].date,
+							imageUser: doctors[i].profileImage
+						};
+						commentsTotal.push(comment);
+					}
+					callback(commentsTotal);
+				}
+			});
 		}
 	});
 };

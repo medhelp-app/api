@@ -70,7 +70,6 @@ VoteController.prototype.delete = function(_idPublication, _idUser, callback) {
 							if (error) {
 								callback(null, error);
 							} else {
-								publication.votes.splice(publication.votes.indexOf(vote),1);
 								publication.save(function (error, res) {
 									if (error) {
 										callback(null, error);

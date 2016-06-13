@@ -91,6 +91,17 @@ router.route('/:idPublication/comment').post(function (req, res) {
 	});
 });
 
+router.route('/:idPublication/comment').get(function (req, res) {
+	commentController.getPublication(req.params.idPublication, function (comment, error) {
+		if (error) {
+			res.status(404);
+			res.send(error);
+		} else {
+			res.json(comment);
+		}
+	});
+});
+
 router.route('/comment/:idPublication/:idUser').delete(function (req, res) {
 	commentController.delete(req.params.idPublication, req.params.idUser, function (comment, error) {
 		if (error) {

@@ -38,6 +38,9 @@ var DoctorSchema = new Schema({
     profileImage:{
         type : String
     },
+    _id :{
+        type: Schema.Types.ObjectId, ref: 'user'
+    },
     healthInsurance: [{healthInsurance: String}],
     opinions : [{generalRating : Number, punctualityRating: Number, attentionRating: Number, installationRating: Number, comment : String }]
 });
