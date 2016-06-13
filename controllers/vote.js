@@ -97,33 +97,20 @@ VoteController.prototype.getPublication = function(_idPublication, callback) {
 			callback(null,error);
 		}
 		else{
-			var idUsers = [];
+			var votesTotal = [];
 			for(var i=0;i<votes.length;i++){
-				idUsers.push(votes[i].idUser._id);
+				var vote = {
+					nameUser: votes[i].idUser.name,
+					idUser: votes[i].idUser._id,
+					_id: votes[i]._id,
+					idPublication: votes[i].idPublication,
+					type: votes[i].type,
+					date: votes[i].date,
+					imageUser: votes[i].profileImage
+				};
+				votesTotal.push(vote);
 			}
-			User.aggregate([{$match: {_id: {$in: idUsers}}},{$lookup : { from: 'doctors', localField: "_id",foreignField: "_id", as: "more"}}],function (error, result){			
-			//Doctor.find({'_id': { $in: idUsers}}).populate('_id').exec(function(error, doctors){
-				if(error){
-					callback(null,error);
-				}
-				else{
-					callback(result);
-					// var commentsTotal = [];
-					// for(var i=0;i<doctors.length;i++){
-					// 	var comment = {
-					// 		nameUser: comments[i].idUser.name,
-					// 		idUser: comments[i].idUser._id,
-					// 		_id: comments[i]._id,
-					// 		idPublication: comments[i].idPublication,
-					// 		text: comments[i].text,
-					// 		date: comments[i].date,
-					// 		imageUser: doctors[i].profileImage
-					// 	};
-					// 	commentsTotal.push(comment);
-					// }
-					// callback(commentsTotal);
-				}
-			});
+			callback(votesTotal);
 		}
 	});
 };

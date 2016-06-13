@@ -23,7 +23,6 @@ app.use('/uploads', express.static('uploads'));
 global.getSuperSecret = app.get('superSecret');
 
 app.use(function (req, res, next) {
-	//next();
 	if (req.url.indexOf('/users/login') >= 0 || req.url.indexOf('password') >= 0 || 
 		(req.url.indexOf('/users') >= 0 && req.method == 'POST')) {
 		next();

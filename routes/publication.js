@@ -32,6 +32,17 @@ router.route('/').get(function (req, res) {
 	});
 });
 
+router.route('/:id').get(function (req, res) {
+	publicationController.get(req.params.id, function (publications, error) {
+		if (error) {
+			res.status(404);
+			res.send(error);
+		} else {
+			res.json(publications);
+		}
+	});	
+});
+
 router.route('/:id').delete(function (req, res) {
 	publicationController.delete(req.params.id, function (publication, error) {
 		if (error) {

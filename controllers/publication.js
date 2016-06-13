@@ -65,6 +65,35 @@ PublicationController.prototype.getAll = function(callback) {
 	});
 };
 
+PublicationController.prototype.get = function(_id, callback) {
+	Publication.findById(_id).populate('comments').populate('votes').exec(function (error, publication) {
+		if (error) {
+			callback(null, error);
+		} else {
+				var agree = 0;
+				var disagree = 0;
+				for(var j=0;j<publication.votes.length;j++){
+					if(publication.votes[j].type=="agree") agree+=1;
+					else disagree+=1;
+				}
+				var publicationa = {
+					idUser: publication.idUser,
+					_id: publication._id,
+					type: publication.type,
+					text: publication.text,
+					date: publication.date,
+					sizeComments: publication.comments.length,
+					comments: publication.comments,
+					votes: publication.votes,
+					agree: agree,
+					disagree: disagree
+				};
+
+			}
+			callback(publicationa);
+	});
+};
+
 PublicationController.prototype.delete = function(_idPublication,callback) {
 	Publication.remove({_id: _idPublication},function (error, publication) {
 		if (error) {

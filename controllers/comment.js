@@ -84,31 +84,20 @@ CommentController.prototype.getPublication = function(_idPublication, callback) 
 			callback(null,error);
 		}
 		else{
-			var idUsers = [];
+			var commentsTotal = [];
 			for(var i=0;i<comments.length;i++){
-				idUsers.push(comments[i].idUser._id);
+				var comment = {
+					nameUser: comments[i].idUser.name,
+					idUser: comments[i].idUser._id,
+					_id: comments[i]._id,
+					idPublication: comments[i].idPublication,
+					text: comments[i].text,
+					date: comments[i].date,
+					imageUser: comments[i].profileImage
+				};
+				commentsTotal.push(comment);
 			}
-			Doctor.find({'_id': { $in: idUsers}}).populate('_id').exec(function(error, doctors){
-				if(error){
-					callback(null,error);
-				}
-				else{
-					var commentsTotal = [];
-					for(var i=0;i<doctors.length;i++){
-						var comment = {
-							nameUser: comments[i].idUser.name,
-							idUser: comments[i].idUser._id,
-							_id: comments[i]._id,
-							idPublication: comments[i].idPublication,
-							text: comments[i].text,
-							date: comments[i].date,
-							imageUser: doctors[i].profileImage
-						};
-						commentsTotal.push(comment);
-					}
-					callback(commentsTotal);
-				}
-			});
+			callback(commentsTotal);
 		}
 	});
 };
