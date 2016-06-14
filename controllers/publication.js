@@ -36,7 +36,7 @@ PublicationController.prototype.insert = function(_publication, callback) {
 };
 
 PublicationController.prototype.getAll = function(callback) {
-	Publication.find().populate('comments').populate('votes').exec(function (error, publications) {
+	Publication.find().populate('comments').populate('votes').populate('idUser').exec(function (error, publications) {
 		if (error) {
 			callback(null, error);
 		} else {
@@ -49,12 +49,14 @@ PublicationController.prototype.getAll = function(callback) {
 					else disagree+=1;
 				}
 				var publication = {
-					idUser: publications[i].idUser,
+					idUser: publications[i].idUser._id,
 					_id: publications[i]._id,
 					type: publications[i].type,
 					text: publications[i].text,
 					date: publications[i].date,
 					comments: publications[i].comments.length,
+					imageUser: publications[i].idUser.profileImage,
+					nameUser: publications[i].idUser.name,
 					agree: agree,
 					disagree: disagree
 				};

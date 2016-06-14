@@ -3,7 +3,7 @@ var Schema = mongoose.Schema;
 
 var PublicationSchema = new Schema({
     idUser :{
-        type : Schema.Types.ObjectId, ref: 'users'
+        type : Schema.Types.ObjectId, ref: 'user'
     },
     type: {
         type: String,

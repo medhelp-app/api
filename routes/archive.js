@@ -17,7 +17,7 @@ router.route('/:userId').get(function (req, res) {
 });
 
 router.route('/:id').delete(function (req, res) {
-    archiveController.delete(req.params.id, req.params.image, function (result, error) {
+    archiveController.delete(req.params.id, function (result, error) {
         if (error) {
             res.status(404);
             res.send(error);
@@ -27,8 +27,8 @@ router.route('/:id').delete(function (req, res) {
     });
 });
 
-router.route('/:id/:image').get(function (req, res) {
-    archiveController.get(req.params.id, req.params.image, function (result, error) {
+router.route('/:id').get(function (req, res) {
+    archiveController.get(req.params.id, function (result, error) {
         if (error) {
             res.status(404);
             res.send(error);
