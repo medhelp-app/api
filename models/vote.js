@@ -17,4 +17,6 @@ var VoteSchema = new Schema({
     }
 });
 
+VoteSchema.plugin(global.encrypt, { encryptionKey: global.encKey, signingKey: global.sigKey });
+
 module.exports = mongoose.model('vote', VoteSchema);

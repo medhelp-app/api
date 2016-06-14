@@ -13,4 +13,6 @@ var availabilityDoctorSchema = new Schema({
     endHour: String
 });
 
+availabilityDoctorSchema.plugin(global.encrypt, { encryptionKey: global.encKey, signingKey: global.sigKey });
+
 module.exports = mongoose.model('availabilityDoctor', availabilityDoctorSchema);

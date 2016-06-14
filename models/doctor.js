@@ -42,4 +42,6 @@ var DoctorSchema = new Schema({
     opinions : [{generalRating : Number, punctualityRating: Number, attentionRating: Number, installationRating: Number, comment : String }]
 });
 
+DoctorSchema.plugin(global.encrypt, { encryptionKey: global.encKey, signingKey: global.sigKey });
+
 module.exports = mongoose.model('doctor', DoctorSchema);

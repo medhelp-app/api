@@ -13,4 +13,6 @@ var FollowSchema = new Schema({
     }
 });
 
+FollowSchema.plugin(global.encrypt, { encryptionKey: global.encKey, signingKey: global.sigKey });
+
 module.exports = mongoose.model('follow', FollowSchema);

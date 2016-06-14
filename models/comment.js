@@ -16,4 +16,6 @@ var CommentSchema = new Schema({
     }
 });
 
+CommentSchema.plugin(global.encrypt, { encryptionKey: global.encKey, signingKey: global.sigKey });
+
 module.exports = mongoose.model('comment', CommentSchema);

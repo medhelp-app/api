@@ -32,4 +32,6 @@ var PatientSchema = new Schema({
     bodyPart : [{part : String, problems: [{problem: String, description:String, severity: String, occurredDate : Date, resolved: Boolean}]}]
 });
 
+PatientSchema.plugin(global.encrypt, { encryptionKey: global.encKey, signingKey: global.sigKey });
+
 module.exports = mongoose.model('patient', PatientSchema);

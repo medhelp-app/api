@@ -14,4 +14,6 @@ var AppointmentSchema = new Schema({
     date: Date
 });
 
+AppointmentSchema.plugin(global.encrypt, { encryptionKey: global.encKey, signingKey: global.sigKey });
+
 module.exports = mongoose.model('appointment', AppointmentSchema);

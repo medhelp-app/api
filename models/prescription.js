@@ -14,4 +14,6 @@ var PrescriptionsSchema = new Schema({
     medicines: [{name: String, amount: String, occurence: String, description: String, note: String}]
 });
 
+PrescriptionsSchema.plugin(global.encrypt, { encryptionKey: global.encKey, signingKey: global.sigKey });
+
 module.exports = mongoose.model('prescriptions', PrescriptionsSchema);

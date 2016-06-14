@@ -23,4 +23,6 @@ var UserSchema = new Schema({
 	}
 });
 
+UserSchema.plugin(global.encrypt, { encryptionKey: global.encKey, signingKey: global.sigKey });
+
 module.exports = mongoose.model('user', UserSchema);

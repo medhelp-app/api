@@ -32,4 +32,6 @@ var AlertMedicinesSchema = new Schema({
     }
 });
 
+AlertMedicinesSchema.plugin(global.encrypt, { encryptionKey: global.encKey, signingKey: global.sigKey });
+
 module.exports = mongoose.model('AlertMedicines', AlertMedicinesSchema);

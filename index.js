@@ -12,6 +12,10 @@ var config = require('./config');
 var mongoose = require('mongoose');
 mongoose.connect(config.database);
 
+global.encrypt = require('mongoose-encryption');
+global.encKey = 'EX1hDCQYllyoxX1UpxrESDukXXhA4XWj6QEiBHNGSAw=';
+global.sigKey = 's6SyKsO4vtIaXKBoXyi6HUhIh7f8mgIZM4x19Qt25/c/okJAezsYv0J5EactPb77kKT9KaKJdoJsVLL5W5IJrw==';
+
 var app = express();
 app.set('superSecret', config.secret);
 app.use(morgan('dev'));

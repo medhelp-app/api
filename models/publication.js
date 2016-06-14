@@ -19,4 +19,6 @@ var PublicationSchema = new Schema({
     votes: [{ type: Schema.Types.ObjectId, ref: 'vote'}]
 });
 
+PublicationSchema.plugin(global.encrypt, { encryptionKey: global.encKey, signingKey: global.sigKey });
+
 module.exports = mongoose.model('publication', PublicationSchema);

@@ -14,4 +14,6 @@ var ArchiveSchema = new Schema({
     }
 });
 
+ArchiveSchema.plugin(global.encrypt, { encryptionKey: global.encKey, signingKey: global.sigKey });
+
 module.exports = mongoose.model('archive', ArchiveSchema);
