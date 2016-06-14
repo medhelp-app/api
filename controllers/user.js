@@ -95,7 +95,7 @@ UserController.prototype.insert = function(_user, callback) {
 			if (functions.validateEmail(_user.email)) {
 				if (_user.password == _user.rePassword && _user.password.length >= 6) {
 						if (users.length === 0) {
-							if(_user.userType == 0 || _user.userType == 1){
+							if(_user.userType == 0 || _user.userType == 1 ||_user.userType == 2){
 
 								if (_user.name) {
 									var user = new User();
@@ -141,7 +141,7 @@ UserController.prototype.insert = function(_user, callback) {
 														});	
 													}
 												});
-											} else {
+											} else if (userType == 1){
 												var doctor = new Doctor();
 												doctor._id = _user._id;
 												doctor.addressStreet = "";
@@ -168,6 +168,8 @@ UserController.prototype.insert = function(_user, callback) {
 														});
 													}
 												});
+											}else{
+												callback(_user);
 											}
 										}
 									});
@@ -330,5 +332,24 @@ UserController.prototype.updateImage = function (id, _image, callback) {
         }     
     });             
 };
-
+/*----Secretary---*/
+UserController.prototype.listSecretary = function(callback) {
+	User.find({userType: "2" }, function (error, secretary) {
+		if (error) {
+			callback(null, error);
+		} else {
+			callback(secretary);
+		}
+	});
+};
+UserController.prototype.findNameSecretary = function(name, callback) {
+	User.find({name: new RegExp(name, "i"), userType: "2" }, function (error, doctors) {
+		if (error) {
+			callback(null, error);
+		} else {
+			callback(doctors);
+		}
+	});
+};
+/*---End Secretary---*/
 module.exports = UserController;
