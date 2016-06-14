@@ -154,25 +154,4 @@ router.route('/:id/image').put(multer({
     });
 });
 
-/*---Secretary---*/
-router.route('/secretary').get(function (req, res) {
-	userController.listSecretary(function (users, error) {
-		if (error) {
-			res.status(404);
-			res.send(error);
-		} else {
-			res.json(users);
-		}
-	});
-});
-router.route('/secretary/:name').get(function (req, res) {
-	userController.findNameSecretary(req.params.name, function (users, error) {
-		if (error) {
-			res.status(404);
-			res.send(error);
-		} else {
-			res.json(users);
-		}
-	});
-});
 module.exports = router;

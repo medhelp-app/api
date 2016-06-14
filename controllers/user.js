@@ -334,20 +334,21 @@ UserController.prototype.updateImage = function (id, _image, callback) {
 };
 /*----Secretary---*/
 UserController.prototype.listSecretary = function(callback) {
-	User.find({userType: "2" }, function (error, secretary) {
+	console.log('entrou')
+	User.find({userType: '2'},function (error, users) {
 		if (error) {
 			callback(null, error);
 		} else {
-			callback(secretary);
+			callback(users);
 		}
 	});
 };
 UserController.prototype.findNameSecretary = function(name, callback) {
-	User.find({name: new RegExp(name, "i"), userType: "2" }, function (error, doctors) {
+	User.find({name: new RegExp(name, "i"), userType: "2" }, function (error, users) {
 		if (error) {
 			callback(null, error);
 		} else {
-			callback(doctors);
+			callback(users);
 		}
 	});
 };
