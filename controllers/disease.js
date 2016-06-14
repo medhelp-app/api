@@ -1,7 +1,8 @@
 var jsonfile = require("jsonfile");
+var Functions = require('../util/functions');
 
 function DiseaseController () {
-    
+    this.functions = new Functions();
 }
 
 DiseaseController.prototype.getAll = function (callback) {
@@ -16,6 +17,7 @@ DiseaseController.prototype.getAll = function (callback) {
 };
 
 DiseaseController.prototype.getName = function (_disease,callback) {
+    var functions = this.functions;
     jsonfile.readFile('./models/disease.json', function(error, diseases) {
         var diseases_name = []; 
         if(error){
@@ -23,10 +25,10 @@ DiseaseController.prototype.getName = function (_disease,callback) {
         }
         else{
             for(var i=0;i<diseases.length;i++){
-                if(diseases[i].indexOf(_disease) >= 0) diseases_name.push(diseases[i]);
+                if(functions.search(diseases[i],_disease)) diseases_name.push(diseases[i]);
             }
             if(diseases_name.length==0){
-                callback(null,{error:"Não existe doença com esse nome"})
+                callback({success:"Não existe doença com esse nome"})
             }
             else{
                 callback(diseases_name);

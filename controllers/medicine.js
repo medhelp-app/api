@@ -1,7 +1,8 @@
 var jsonfile = require("jsonfile");
+var Functions = require('../util/functions');
 
 function MedicineController () {
-    
+    this.functions = new Functions();
 }
 
 MedicineController.prototype.getAll = function (callback) {
@@ -16,6 +17,7 @@ MedicineController.prototype.getAll = function (callback) {
 };
 
 MedicineController.prototype.getName = function (_name,callback) {
+    var functions = this.functions;
     jsonfile.readFile('./models/medicines.json', function(error, medicines) {
         var medicines_name = []; 
         if(error){
@@ -24,10 +26,10 @@ MedicineController.prototype.getName = function (_name,callback) {
         else{
             _name = _name.toUpperCase();
             for(var i=0;i<medicines.length;i++){
-                if(medicines[i].nome.indexOf(_name) >= 0) medicines_name.push(medicines[i]);
+                if(functions.search(medicines[i].nome,_name)) medicines_name.push(medicines[i]);
             }
             if(medicines_name.length==0){
-                callback(null,{error:"Não existe remédio com esse nome"})
+                callback({success:"Não existe remédio com esse nome"})
             }
             else{
                 callback(medicines_name);

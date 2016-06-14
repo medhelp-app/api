@@ -1,7 +1,8 @@
 var jsonfile = require("jsonfile");
+var Functions = require('../util/functions');
 
 function HospitalController () {
-    
+    this.functions = new Functions();
 }
 
 HospitalController.prototype.getAll = function (callback) {
@@ -16,6 +17,7 @@ HospitalController.prototype.getAll = function (callback) {
 };
 
 HospitalController.prototype.getName = function (_name,callback) {
+    var functions = this.functions;
     jsonfile.readFile('./models/hospitals.json', function(error, hospitals) {
         var hospitals_name = []; 
         if(error){
@@ -24,10 +26,10 @@ HospitalController.prototype.getName = function (_name,callback) {
         else{
             _name = _name.toUpperCase();
             for(var i=0;i<hospitals.length;i++){
-                if(hospitals[i].nome.indexOf(_name) >= 0) hospitals_name.push(hospitals[i]);
+                if(functions.search(hospitals[i].nome,_name)) hospitals_name.push(hospitals[i]);
             }
             if(hospitals_name.length==0){
-                callback(null,{error:"Não existe hospital com esse nome"})
+                callback({success:"Não existe hospital com esse nome"})
             }
             else{
                 callback(hospitals_name);

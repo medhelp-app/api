@@ -1,12 +1,10 @@
 var Archive = require('../models/archive');
 var UserController = require('../controllers/user');
-var Functions = require('../util/functions');
 var fs = require('fs');
 
 function ArchiveController () {
-    this.functions = new Functions();
-
 }
+
 ArchiveController.prototype.insert = function (idUser,_archive,callback) {
     var userController = new UserController;
     var archive = new Archive();
