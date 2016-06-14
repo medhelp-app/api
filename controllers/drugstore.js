@@ -1,7 +1,8 @@
 var jsonfile = require("jsonfile");
+var Functions = require('../util/functions');
 
 function DrugstoreController () {
-    
+    this.functions = new Functions();
 }
 
 DrugstoreController.prototype.getAll = function (callback) {
@@ -16,6 +17,7 @@ DrugstoreController.prototype.getAll = function (callback) {
 };
 
 DrugstoreController.prototype.getName = function (_name,callback) {
+    var functions = this.functions;
     jsonfile.readFile('./models/drugstores.json', function(error, drugstores) {
         var drugstores_name = []; 
         if(error){
@@ -24,10 +26,10 @@ DrugstoreController.prototype.getName = function (_name,callback) {
         else{
             _name = _name.toUpperCase();
             for(var i=0;i<drugstores.length;i++){
-                if(drugstores[i].nome.indexOf(_name) >= 0) drugstores_name.push(drugstores[i]);
+                if(functions.search(drugstores[i].nome,_name)) drugstores_name.push(drugstores[i]);
             }
             if(drugstores_name.length==0){
-                callback(null,{error:"Não existe farmácia com esse nome"})
+                callback({success:"Não existe farmácia com esse nome"})
             }
             else{
                 callback(drugstores_name);
