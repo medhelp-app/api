@@ -8,11 +8,14 @@ function VoteController () {
 }
 
 VoteController.prototype.insert = function(_idPublication, _vote, callback) {
-	Vote.findOne({idUser: _vote.idUser, idPublication: _idPublication}, function(error,result) {
+	Vote.find(function(error,result) {
 		if(error){
 			callback(null,error);
-		}
-		else{
+		} else {
+			console.log(result);
+			console.log(_vote);
+			result = global.find(result, { idUser: _vote.idUser, idPublication: _idPublication })[0];
+
 			if(result){
 				if(result.type!=_vote.type){
 					Vote.update({_id: result._id}, { $set: {type:_vote.type} }, { upsert: true }, function (error, status) {
@@ -29,7 +32,7 @@ VoteController.prototype.insert = function(_idPublication, _vote, callback) {
 				}				
 			}
 			else{
-				Publication.findOne({_id: _idPublication}, function(error, publication) {
+				Publication.find({_id: _idPublication}, function(error, publication) {
 					var vote = new Vote();
 					vote.idUser = _vote.idUser;
 					vote.idPublication = _idPublication;
@@ -40,8 +43,8 @@ VoteController.prototype.insert = function(_idPublication, _vote, callback) {
 							callback(null,error);
 						}
 						else{
-							publication.votes.push(vote);
-							publication.save(function (error, res) {
+							publication[0].votes.push(vote);
+							publication[0].save(function (error, res) {
 								if (error) {
 									callback(null, error);
 								} else {

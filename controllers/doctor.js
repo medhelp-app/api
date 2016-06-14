@@ -19,11 +19,11 @@ DoctorController.prototype.getAll = function(callback) {
 };
 
 DoctorController.prototype.findSpeciality = function(callback) {
-	Doctor.find().distinct('doctorType', function (error, doctors) {
+	Doctor.find(function (error, doctors) {
 		if (error) {
 			callback(null, error);
 		} else {
-			callback(doctors);
+			callback(global.distinct(doctors, 'doctorType'));
 		}
 	});	
 };

@@ -75,11 +75,11 @@ UserController.prototype.findName = function(name, callback) {
 };
 
 UserController.prototype.findDoctors = function(callback) {
-	User.find({ userType: "1" }).distinct('name', function (error, doctors) {
+	User.find(function (error, doctors) {
 		if (error) {
 			callback(null, error);
 		} else {
-			callback(doctors);
+			callback(global.distinct(global.find(doctors, { userType: 1 }), 'name'));
 		}
 	});
 };
@@ -193,12 +193,14 @@ UserController.prototype.insert = function(_user, callback) {
 UserController.prototype.login = function(login, callback) {
 	if (login && login.email && login.password) {
 		var passwordHash = sha512(login.password).toString('hex');
-		User.find({ email: login.email, password: passwordHash }, function (error, users) {
+		User.find(function (error, users) {
 			if (error) {
 				callback(null, error);
 			} else {
-				if (users.length > 0) {
-					callback(users[0]);
+				var findUsers = global.find(users, { email: login.email, password: passwordHash });
+
+				if (findUsers.length > 0) {
+					callback(findUsers[0]);
 				} else {
 					callback(null, { error: 'E-mail ou senha inválidos.' });
 				}

@@ -9,6 +9,8 @@ var jwt = require('jsonwebtoken');
 
 var config = require('./config');
 
+require('./util/functions.js');
+
 var mongoose = require('mongoose');
 mongoose.connect(config.database);
 
@@ -25,6 +27,7 @@ app.use(bodyParser.json());
 app.use('/uploads', express.static('uploads'));
 
 global.getSuperSecret = app.get('superSecret');
+
 
 app.use(function (req, res, next) {
 	if (req.url.indexOf('/users/login') >= 0 || req.url.indexOf('password') >= 0 || 
