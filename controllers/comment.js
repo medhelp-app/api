@@ -93,7 +93,7 @@ CommentController.prototype.getPublication = function(_idPublication, callback) 
 					idPublication: comments[i].idPublication,
 					text: comments[i].text,
 					date: comments[i].date,
-					imageUser: comments[i].profileImage
+					imageUser: comments[i].idUser.profileImage
 				};
 				commentsTotal.push(comment);
 			}
