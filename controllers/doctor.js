@@ -273,7 +273,8 @@ DoctorController.prototype.getForId = function (idUser, callback) {
 							ufCrm: doctor.ufCrm,
 							doctorType: doctor.doctorType,
 							crmStatus: doctor.crmStatus,
-							profileImage: user.profileImage
+							profileImage: user.profileImage,
+							showOpinions: doctor.showOpinions
 						}
 
 						callback(userFull);
@@ -321,6 +322,7 @@ DoctorController.prototype.update = function (id, _doctor, callback) {
 								doctorUpdate.crm = _doctor.crm;
 								doctorUpdate.ufCrm = _doctor.ufCrm;
 								doctorUpdate.doctorType = _doctor.doctorType;
+								doctorUpdate.showOpinions = _doctor.showOpinions;
 								doctorUpdate.crmStatus = dadosCrm[0].situacao;
 
 								if (user.email === _doctor.email) {

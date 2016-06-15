@@ -57,6 +57,7 @@ var DoctorSchema = new Schema({
         get: global.decrypt, 
         set: global.encrypt
     },
+    showOpinions: Boolean,
     _id :{
         type: Schema.Types.ObjectId, ref: 'user'
     },
