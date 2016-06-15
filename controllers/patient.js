@@ -51,7 +51,6 @@ PatientController.prototype.getForId = function (idUser, callback) {
                     if (error) {
                         callback(null, error);
                     } else {
-                        console.log(user.profileImage);
                         var userFull = {
                             _id: patient._id,
                             name: user.name,
@@ -120,23 +119,23 @@ PatientController.prototype.update = function (id, _patient, callback) {
                         email: _patient.email
                     };
 
-                    var patientUpdate = {
-                        addressStreet :_patient.addressStreet,
-                        addressNumber : _patient.addressNumber,
-                        city : _patient.city,
-                        state : _patient.state,
-                        zipCode : _patient.zipCode,
-                        country : _patient.country,
-                        phone : _patient.phone,
-                        healthInsurance: _patient.healthInsurance
-                    };
+                    var patientUpdate = new Patient();
+                    patientUpdate._id = id;
+                    patientUpdate.addressStreet = _patient.addressStreet;
+                    patientUpdate.addressNumber =  _patient.addressNumber;
+                    patientUpdate.city =  _patient.city;
+                    patientUpdate.state =  _patient.state;
+                    patientUpdate.zipCode =  _patient.zipCode;
+                    patientUpdate.country =  _patient.country;
+                    patientUpdate.phone =  _patient.phone;
+                    patientUpdate.healthInsurance = _patient.healthInsurance;
 
                     if (user.email === _patient.email) {
                         userController.update(id, userUpdate, function (status, error) {
                             if (error) {
                                 callback(error);
                             } else {
-                                Patient.update({ _id: id }, { $set: patientUpdate }, { upsert: true }, function (error, status) {
+                                patientUpdate.save(function (error, status) {
                                     if (error) {
                                         callback(error);
                                     } else {
@@ -155,12 +154,12 @@ PatientController.prototype.update = function (id, _patient, callback) {
                                         if (error) {
                                             callback(error);
                                         } else {
-                                            Patient.update({ _id: id }, { $set: patientUpdate }, {upsert: true }, function (error, status) {
+                                            patientUpdate.save(function (error, status) {
                                                 if (error) {
                                                     callback(error);
                                                 } else {
                                                     callback({ sucess: "ok" });
-                                                };
+                                                }
                                             });
                                         };
                                     });
@@ -189,17 +188,19 @@ PatientController.prototype.updateImage = function (id, _image, callback) {
                 data = new Buffer(data).toString('base64');
                 if(error){
                     callback(null,error);
-                }
-                else{
-                    Patient.update({ _id: id }, { $set: {profileImage:data} }, { upsert: true }, function (error, status) {
-                        if (error) {
-                            fs.unlink('./uploads/'+_image.filename);
-                            callback(error);
-                        } else {
-                            fs.unlink('./uploads/'+_image.filename);
-                            callback({ sucess: "ok" });
-                        }
-                    });
+                } else {
+                    Patient.findOn({ _id: id }, function (error, patient) {
+                        patient.profileImage = data;
+                        patient.save(function (error) {
+                            if (error) {
+                                fs.unlink('./uploads/'+_image.filename);
+                                callback(error);
+                            } else {
+                                fs.unlink('./uploads/'+_image.filename);
+                                callback({ sucess: "ok" });
+                            }
+                        })
+                    })
                 }     
             });             
         };

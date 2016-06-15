@@ -62,6 +62,7 @@ var DoctorSchema = new Schema({
     },
     healthInsurance: [{healthInsurance: String}],
     opinions : [{generalRating : Number, punctualityRating: Number, attentionRating: Number, installationRating: Number, comment : String }]
+    
 }, { toJSON: { getters: true } });
 
 module.exports = mongoose.model('doctor', DoctorSchema);

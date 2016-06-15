@@ -30,27 +30,31 @@ DoctorController.prototype.findSpeciality = function(callback) {
 
 DoctorController.prototype.findName = function(name, callback) {
 	var userController = new UserController();
-	User.find({name: new RegExp(global.encrypt(name), "i"), userType: "1" }, function (error, users) {
+	User.find({ userType: 1 }, function (error, users) {
 		if (error) {
 			callback(null, error);
 		} else {
-			usersId = [];
+			var searched = [];
 			for (var i = 0; i < users.length; i++) {
-		    	usersId.push(users[i]._id);
+				if (users[i].name.toLowerCase().indexOf(name.toLowerCase()) >= 0)
+					searched.push(users[i]);
+			};
+
+			usersId = [];
+			for (var i = 0; i < searched.length; i++) {
+		    	usersId.push(searched[i]._id);
 		    }
-			Doctor.find({'_id': 
-				{ $in: usersId}
-			}, function(err, doctors){
+			Doctor.find({'_id': { $in: usersId} }, function(err, doctors){
 					docs = [];
 				    for (var i = 0; i < doctors.length; i++) {
-				    	for(var j = 0;j < users.length; j++) {
-				    		if(doctors[i].id==users[j].id){
+				    	for(var j = 0;j < searched.length; j++) {
+				    		if(doctors[i].id==searched[j].id){
 				    			var doctorFull = {
-							    	_id: users[j].id,
-							    	name: users[j].name,
-							    	email: users[j].email,
+							    	_id: searched[j].id,
+							    	name: searched[j].name,
+							    	email: searched[j].email,
 							    	doctorType: doctors[i].doctorType,
-							    	profileImage: users[j].profileImage
+							    	profileImage: searched[j].profileImage
 							    }
 							    docs.push(doctorFull);
 							    break;
