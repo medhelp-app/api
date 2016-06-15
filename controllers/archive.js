@@ -1,12 +1,13 @@
 var Archive = require('../models/archive');
 var UserController = require('../controllers/user');
+var PatientController = require('../controllers/patient');
 var fs = require('fs');
 
 function ArchiveController () {
 }
 
 ArchiveController.prototype.insert = function (_idUser,_archive,callback) {
-    var userController = new UserController;
+    var patientController = new PatientController;
     var archive = new Archive();
     patientController.getForId(_idUser, function (user, error) {
         if (error) {
@@ -15,8 +16,7 @@ ArchiveController.prototype.insert = function (_idUser,_archive,callback) {
             fs.readFile('./uploads/'+_archive.filename, function (error, data) {
                 data = new Buffer(data).toString('base64');
                 archive.archive = data;
-                archive.idUser = idUser;
-                archive.type = _archive.type;
+                archive.idUser = _idUser;
                 archive.save(function (error) {
                     if (error) {
                         fs.unlink('./uploads/'+_archive.filename);

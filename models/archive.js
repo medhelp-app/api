@@ -7,10 +7,6 @@ var ArchiveSchema = new Schema({
     },
     archive :{
         type : String
-    },
-    type :{
-        type : String,
-        enum: ['prescription', 'exam']
     }
 });
 
