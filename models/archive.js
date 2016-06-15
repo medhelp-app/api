@@ -3,7 +3,7 @@ var Schema = mongoose.Schema;
 
 var ArchiveSchema = new Schema({
     idUser :{
-        type : String
+        type : Schema.Types.ObjectId, ref: 'patients'
     },
     archive :{
         type : String
