@@ -57,11 +57,13 @@ var DoctorSchema = new Schema({
         get: global.decrypt, 
         set: global.encrypt
     },
+    showOpinions: Boolean,
     _id :{
         type: Schema.Types.ObjectId, ref: 'user'
     },
     healthInsurance: [{healthInsurance: String}],
     opinions : [{generalRating : Number, punctualityRating: Number, attentionRating: Number, installationRating: Number, comment : String }]
+    
 }, { toJSON: { getters: true } });
 
 module.exports = mongoose.model('doctor', DoctorSchema);

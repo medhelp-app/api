@@ -49,7 +49,7 @@ router.route('/login').post(function (req, res) {
 			res.status(401);
 			res.send(error);
 		} else {
-			var token = jwt.sign(user, global.getSuperSecret, {
+			var token = jwt.sign(user._id, global.getSuperSecret, {
 				expiresIn: '1h'
 			});
 

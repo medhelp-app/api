@@ -30,27 +30,31 @@ DoctorController.prototype.findSpeciality = function(callback) {
 
 DoctorController.prototype.findName = function(name, callback) {
 	var userController = new UserController();
-	User.find({name: new RegExp(global.encrypt(name), "i"), userType: "1" }, function (error, users) {
+	User.find({ userType: 1 }, function (error, users) {
 		if (error) {
 			callback(null, error);
 		} else {
-			usersId = [];
+			var searched = [];
 			for (var i = 0; i < users.length; i++) {
-		    	usersId.push(users[i]._id);
+				if (users[i].name.toLowerCase().indexOf(name.toLowerCase()) >= 0)
+					searched.push(users[i]);
+			};
+
+			usersId = [];
+			for (var i = 0; i < searched.length; i++) {
+		    	usersId.push(searched[i]._id);
 		    }
-			Doctor.find({'_id': 
-				{ $in: usersId}
-			}, function(err, doctors){
+			Doctor.find({'_id': { $in: usersId} }, function(err, doctors){
 					docs = [];
 				    for (var i = 0; i < doctors.length; i++) {
-				    	for(var j = 0;j < users.length; j++) {
-				    		if(doctors[i].id==users[j].id){
+				    	for(var j = 0;j < searched.length; j++) {
+				    		if(doctors[i].id==searched[j].id){
 				    			var doctorFull = {
-							    	_id: users[j].id,
-							    	name: users[j].name,
-							    	email: users[j].email,
+							    	_id: searched[j].id,
+							    	name: searched[j].name,
+							    	email: searched[j].email,
 							    	doctorType: doctors[i].doctorType,
-							    	profileImage: users[j].profileImage
+							    	profileImage: searched[j].profileImage
 							    }
 							    docs.push(doctorFull);
 							    break;
@@ -269,7 +273,8 @@ DoctorController.prototype.getForId = function (idUser, callback) {
 							ufCrm: doctor.ufCrm,
 							doctorType: doctor.doctorType,
 							crmStatus: doctor.crmStatus,
-							profileImage: user.profileImage
+							profileImage: user.profileImage,
+							showOpinions: doctor.showOpinions
 						}
 
 						callback(userFull);
@@ -296,6 +301,7 @@ DoctorController.prototype.update = function (id, _doctor, callback) {
 				var url = 'http://www.consultacrm.com.br/api/index.php?tipo=crm&uf='+_doctor.ufCrm+'&q='+_doctor.crm+'&chave=9472549841&destino=json';
 				Functions.prototype.getApi(url, function (data) {
 					var dadosCrm = JSON.parse(data).item;
+
 					if(dadosCrm.length===0){
 						callback({ error: 'Crm inválido.' });
 					}else{
@@ -305,59 +311,60 @@ DoctorController.prototype.update = function (id, _doctor, callback) {
 								email: _doctor.email
 							};
 
-							var doctorUpdate = new Doctor();
-							doctorUpdate._id = id;
-							doctorUpdate.addressStreet = _doctor.addressStreet;
-							doctorUpdate.addressNumber =  _doctor.addressNumber;
-							doctorUpdate.city = _doctor.city;
-							doctorUpdate.state = _doctor.state;
-							doctorUpdate.zipCode = _doctor.zipCode;
-							doctorUpdate.country = _doctor.country;
-							doctorUpdate.phone = _doctor.phone;
-							doctorUpdate.crm = _doctor.crm;
-							doctorUpdate.ufCrm = _doctor.ufCrm;
-							doctorUpdate.doctorType = _doctor.doctorType;
-							doctorUpdate.crmStatus = dadosCrm[0].crmStatus;
+							Doctor.findOne({ _id: id }, function (error, doctorUpdate) {
+								doctorUpdate.addressStreet = _doctor.addressStreet;
+								doctorUpdate.addressNumber =  _doctor.addressNumber;
+								doctorUpdate.city = _doctor.city;
+								doctorUpdate.state = _doctor.state;
+								doctorUpdate.zipCode = _doctor.zipCode;
+								doctorUpdate.country = _doctor.country;
+								doctorUpdate.phone = _doctor.phone;
+								doctorUpdate.crm = _doctor.crm;
+								doctorUpdate.ufCrm = _doctor.ufCrm;
+								doctorUpdate.doctorType = _doctor.doctorType;
+								doctorUpdate.showOpinions = _doctor.showOpinions;
+								doctorUpdate.crmStatus = dadosCrm[0].situacao;
 
-							if (user.email === _doctor.email) {
-								userController.update(id, userUpdate, function (status, error) {
-									if (error) {
-										callback(error);
-									} else {
-										doctorUpdate.save(function (error, status) {
-											if (error) {
-												callback(error);
-											} else {
-												callback({ sucess: "ok" });
-											}
-										})
-									}
-								});
-							} else {
-								userController.getEmail(_doctor.email, function (users, erros) {
-									if (erros) {
-										callback(erros);
-									} else {
-										if (users.length === 0) {
-											userController.update(id, userUpdate, function (status, error) {
+								if (user.email === _doctor.email) {
+									userController.update(id, userUpdate, function (status, error) {
+										if (error) {
+											callback(error);
+										} else {
+											doctorUpdate.save(function (error, status) {
 												if (error) {
 													callback(error);
 												} else {
-													doctorUpdate.save(function (error, status) {
-														if (error) {
-															callback(error);
-														} else {
-															callback({ sucess: "ok" });
-														}
-													});
+													callback({ sucess: "ok" });
 												}
-											});
+											})
+										}
+									});
+								} else {
+									userController.getEmail(_doctor.email, function (users, erros) {
+										if (erros) {
+											callback(erros);
 										} else {
-											callback({error : 'E-mail já existente.'});
+											if (users.length === 0) {
+												userController.update(id, userUpdate, function (status, error) {
+													if (error) {
+														callback(error);
+													} else {
+														doctorUpdate.save(function (error, status) {
+															if (error) {
+																callback(error);
+															} else {
+																callback({ sucess: "ok" });
+															}
+														});
+													}
+												});
+											} else {
+												callback({error : 'E-mail já existente.'});
+											};
 										};
-									};
-								});
-							};
+									});
+								};
+							});
 						} else {
 							callback({ error: 'E-mail inválido.' });
 						};
