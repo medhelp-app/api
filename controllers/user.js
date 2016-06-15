@@ -36,19 +36,26 @@ UserController.prototype.getAll = function(callback) {
 };
 
 UserController.prototype.update = function (id, user, callback) {
-	var u = new User();
-	u._id = id;
-	u.name = user.name;
-	u.email = user.email;
-	u.userType = user.userType;
-	u.profileImage = user.profileImage;
-	u.save(function (error, status) {
-		if(error){
+	User.findOne({ _id: id }, function (error, u) {
+		if (error) {
 			callback(error);
-		} else{
-			callback(status);
+		} else {
+			u.name = user.name;
+			u.email = user.email;
+			if (user.userType)
+				u.userType = user.userType;
+			
+			u.profileImage = user.profileImage;
+
+			u.save(function (error) {
+				if(error){
+					callback(error);
+				} else{
+					callback(null);
+				}
+			})
 		}
-	})
+	});
 }
 
 UserController.prototype.getEmail = function(_email,callback) {

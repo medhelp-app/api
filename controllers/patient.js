@@ -119,56 +119,56 @@ PatientController.prototype.update = function (id, _patient, callback) {
                         email: _patient.email
                     };
 
-                    var patientUpdate = new Patient();
-                    patientUpdate._id = id;
-                    patientUpdate.addressStreet = _patient.addressStreet;
-                    patientUpdate.addressNumber =  _patient.addressNumber;
-                    patientUpdate.city =  _patient.city;
-                    patientUpdate.state =  _patient.state;
-                    patientUpdate.zipCode =  _patient.zipCode;
-                    patientUpdate.country =  _patient.country;
-                    patientUpdate.phone =  _patient.phone;
-                    patientUpdate.healthInsurance = _patient.healthInsurance;
+                    Patient.findOne({ _id: id }, function (error, patientUpdate) {
+                        patientUpdate.addressStreet = _patient.addressStreet;
+                        patientUpdate.addressNumber =  _patient.addressNumber;
+                        patientUpdate.city =  _patient.city;
+                        patientUpdate.state =  _patient.state;
+                        patientUpdate.zipCode =  _patient.zipCode;
+                        patientUpdate.country =  _patient.country;
+                        patientUpdate.phone =  _patient.phone;
+                        patientUpdate.healthInsurance = _patient.healthInsurance ? _patient.healthInsurance : '';
 
-                    if (user.email === _patient.email) {
-                        userController.update(id, userUpdate, function (status, error) {
-                            if (error) {
-                                callback(error);
-                            } else {
-                                patientUpdate.save(function (error, status) {
-                                    if (error) {
-                                        callback(error);
-                                    } else {
-                                        callback({ sucess: "ok" });
-                                    }
-                                });
-                            }
-                        });
-                    } else {
-                        userController.getEmail(_patient.email, function (users, erros) {
-                            if (erros) {
-                                callback(erros);
-                            } else {
-                                if (users.length === 0) {
-                                    userController.update(id, userUpdate, function (status, error) {
+                        if (user.email === _patient.email) {
+                            userController.update(id, userUpdate, function (error) {
+                                if (error) {
+                                    callback(error);
+                                } else {
+                                    patientUpdate.save(function (error) {
                                         if (error) {
                                             callback(error);
                                         } else {
-                                            patientUpdate.save(function (error, status) {
-                                                if (error) {
-                                                    callback(error);
-                                                } else {
-                                                    callback({ sucess: "ok" });
-                                                }
-                                            });
-                                        };
+                                            callback({ sucess: "ok" });
+                                        }
                                     });
+                                }
+                            });
+                        } else {
+                            userController.getEmail(_patient.email, function (users, erros) {
+                                if (erros) {
+                                    callback(erros);
                                 } else {
-                                    callback({ error : 'E-mail já existente.' });
+                                    if (users.length === 0) {
+                                        userController.update(id, userUpdate, function (error) {
+                                            if (error) {
+                                                callback(error);
+                                            } else {
+                                                patientUpdate.save(function (error) {
+                                                    if (error) {
+                                                        callback(error);
+                                                    } else {
+                                                        callback({ sucess: "ok" });
+                                                    }
+                                                });
+                                            };
+                                        });
+                                    } else {
+                                        callback({ error : 'E-mail já existente.' });
+                                    };
                                 };
-                            };
-                        });
-                    };
+                            });
+                        };
+                    })
                 } else {
                     callback({ error: 'E-mail inválido.' });
                 };
