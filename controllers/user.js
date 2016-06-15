@@ -36,13 +36,19 @@ UserController.prototype.getAll = function(callback) {
 };
 
 UserController.prototype.update = function (id, user, callback) {
-	User.update({_id:id}, { $set: user}, {upsert: false}, function (error, status) {
+	var u = new User();
+	u._id = id;
+	u.name = user.name;
+	u.email = user.email;
+	u.userType = user.userType;
+	u.profileImage = user.profileImage;
+	u.save(function (error, status) {
 		if(error){
 			callback(error);
 		} else{
 			callback(status);
 		}
-	});
+	})
 }
 
 UserController.prototype.getEmail = function(_email,callback) {

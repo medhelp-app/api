@@ -293,7 +293,7 @@ DoctorController.prototype.update = function (id, _doctor, callback) {
 			if (_doctor.email === '' || _doctor.name === '') {
 				callback({ error : "O campo 'nome' e 'e-mail' são obrigatórios." });
 			} else {
-				var url = 'http://www.consultacrm.com.br/api/index.php?tipo=crm&uf='+_doctor.ufCrm+'&q='+_doctor.crm+'&chave=6332538751&destino=json';
+				var url = 'http://www.consultacrm.com.br/api/index.php?tipo=crm&uf='+_doctor.ufCrm+'&q='+_doctor.crm+'&chave=9472549841&destino=json';
 				Functions.prototype.getApi(url, function (data) {
 					var dadosCrm = JSON.parse(data).item;
 					if(dadosCrm.length===0){
@@ -305,32 +305,32 @@ DoctorController.prototype.update = function (id, _doctor, callback) {
 								email: _doctor.email
 							};
 
-							var doctorUpdate = {
-								addressStreet: _doctor.addressStreet,
-								addressNumber:  _doctor.addressNumber,
-								city: _doctor.city,
-								state: _doctor.state,
-								zipCode: _doctor.zipCode,
-								country: _doctor.country,
-								phone: _doctor.phone,
-								crm: _doctor.crm,
-								ufCrm: _doctor.ufCrm,
-								doctorType: _doctor.doctorType,
-								crmStatus: dadosCrm[0].crmStatus
-							};
+							var doctorUpdate = new Doctor();
+							doctorUpdate._id = id;
+							doctorUpdate.addressStreet = _doctor.addressStreet;
+							doctorUpdate.addressNumber =  _doctor.addressNumber;
+							doctorUpdate.city = _doctor.city;
+							doctorUpdate.state = _doctor.state;
+							doctorUpdate.zipCode = _doctor.zipCode;
+							doctorUpdate.country = _doctor.country;
+							doctorUpdate.phone = _doctor.phone;
+							doctorUpdate.crm = _doctor.crm;
+							doctorUpdate.ufCrm = _doctor.ufCrm;
+							doctorUpdate.doctorType = _doctor.doctorType;
+							doctorUpdate.crmStatus = dadosCrm[0].crmStatus;
 
 							if (user.email === _doctor.email) {
 								userController.update(id, userUpdate, function (status, error) {
 									if (error) {
 										callback(error);
 									} else {
-										Doctor.update({ _id:id }, { $set: doctorUpdate }, { upsert: true }, function (error, status) {
+										doctorUpdate.save(function (error, status) {
 											if (error) {
 												callback(error);
 											} else {
 												callback({ sucess: "ok" });
 											}
-										});
+										})
 									}
 								});
 							} else {
@@ -343,12 +343,12 @@ DoctorController.prototype.update = function (id, _doctor, callback) {
 												if (error) {
 													callback(error);
 												} else {
-													Doctor.update({ _id:id }, { $set: doctorUpdate }, { upsert: true }, function (error, status) {
+													doctorUpdate.save(function (error, status) {
 														if (error) {
 															callback(error);
 														} else {
 															callback({ sucess: "ok" });
-														};
+														}
 													});
 												}
 											});
