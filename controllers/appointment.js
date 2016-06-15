@@ -1,4 +1,4 @@
-var Appointment = require('../models/appointment');
+    var Appointment = require('../models/appointment');
 var Doctor = require('../models/doctor');
 var Patient = require('../models/patient');
 var User = require('../models/user');
@@ -69,6 +69,8 @@ AppointmentController.prototype.getDoctors = function(_doctorId, callback) {
                                         callback(availabilities);
                                 });
                             }
+                        } else {
+                            callback([]);
                         }
                     }
                 });
@@ -113,6 +115,8 @@ AppointmentController.prototype.getPatients = function(_patientId, callback) {
                                         callback(availabilities);
                                 });
                             }
+                        } else {
+                            callback([]);
                         }
                     }
                 });
