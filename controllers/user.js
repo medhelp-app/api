@@ -212,6 +212,7 @@ UserController.prototype.login = function(login, callback) {
 				callback(null, error);
 			} else {
 				if (users.length > 0) {
+					users[0].profileImage = '';
 					callback(users[0]);
 				} else {
 					callback(null, { error: 'E-mail ou senha inválidos.' });
