@@ -83,6 +83,7 @@ app.use('/api/medicines', require('./routes/medicine.js'));
 app.use('/api/publications', require('./routes/publication.js'));
 app.use('/api/diseases', require('./routes/disease.js'));
 app.use('/api/secretariats', require('./routes/secretary.js'));
+app.use('/api/records', require('./routes/record.js'));
 
 var port = Number(process.env.PORT || 8080);
 
