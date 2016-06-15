@@ -68,7 +68,7 @@ PublicationController.prototype.getAll = function(callback) {
 };
 
 PublicationController.prototype.get = function(_id, callback) {
-	Publication.findById(_id).populate('comments').populate('votes').exec(function (error, publication) {
+	Publication.findById(_id).order('date').populate('comments').populate('votes').exec(function (error, publication) {
 		if (error) {
 			callback(null, error);
 		} else {
