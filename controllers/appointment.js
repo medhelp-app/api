@@ -97,7 +97,7 @@ AppointmentController.prototype.getPatients = function(_patientId, callback) {
                             load(0);
 
                             function load (i) {
-                                User.find({ _id: availability[i].doctorId }, function (error, user) {
+                                User.find({ _id: availability[i].doctorId._id }, function (error, user) {
                                     var av = {
                                         "_id": availability[i]._id,
                                         "date": availability[i].date,
@@ -109,7 +109,7 @@ AppointmentController.prototype.getPatients = function(_patientId, callback) {
                                     };
 
                                     availabilities.push(av);
-                                    if (i + i < availability.length)
+                                    if (i + 1 < availability.length)
                                         load(i + 1);
                                     else
                                         callback(availabilities);
