@@ -1,6 +1,7 @@
 var Doctor = require('../models/doctor');
 var Patient = require('../models/patient');
 var Record = require('../models/record');
+var User = require('../models/user');
 
 function RecordController () {
 	
@@ -22,6 +23,7 @@ RecordController.prototype.insert = function(_patientId, _record, callback) {
 				record.antecedentesPessoais = _record.antecedentesPessoais;
 				record.habitosVida = _record.habitosVida;
 				record.hipoteseDiagnostica = _record.hipoteseDiagnostica;
+				record.date = _record.date;
 
 				record.save(function (error, record) {
 					if (error) {
@@ -55,17 +57,48 @@ RecordController.prototype.getDoctor = function(_doctorId, callback) {
 };
 
 RecordController.prototype.getPatient = function(_patientId, callback) {
-	Patient.findOne({_id: _patientId},function (error, patient) {
+	Patient.findOne({_id: _patientId}, function (error, patient) {
 		if(error){
 			callback(null, error);
 		}
 		else{
-			Record.find({patientId: _patientId}, function(error, records){
+			Record.find({patientId: _patientId}).populate('doctorId').exec(function(error, records){
 				if(error){
 					callback(null, error);
 				}
 				else{
-					callback(records);
+					var idDoctor = [];
+					for(var i=0;i<records.length;i++){
+						idDoctor.push(records[i].doctorId._id);
+					}
+					User.find({_id:{$in: idDoctor}}, function(error, users){
+						if(error){
+							callback(null,error);
+						}
+						else{
+							var recordsTotal = [];
+							for(var i=0;i<users.length;i++){
+								for(var j=0;j<records.length;j++){
+									if(users[i]._id+""==records[j].doctorId._id+""){
+										var record = {
+											patientId: records[j].patientId,
+											doctorId: records[j].doctorId._id,
+											queixaPrincipal: records[j].queixaPrincipal,
+											historicoDoenca: records[j].historicoDoenca,
+											interrogatorio: records[j].interrogatorio,
+											antecedentesFamiliares: records[j].antecedentesPessoaisecedentesFamiliares,
+											antecedentesPessoais: records[j].antecedentesPessoais,
+											habitosVida: records[j].habitosVida,
+											hipoteseDiagnostica: records[j].hipoteseDiagnostica,
+											doctorName: users[i].name
+										}
+										recordsTotal.push(record);
+									}
+								}
+							}
+							callback(recordsTotal);
+						}
+					});
 				}
 			});
 		}
