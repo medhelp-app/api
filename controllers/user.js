@@ -45,7 +45,7 @@ UserController.prototype.update = function (id, user, callback) {
 }
 
 UserController.prototype.getEmail = function(_email,callback) {
-	User.find({email:_email},function (error, users) {
+	User.find({email:global.encrypt(_email)},function (error, users) {
 		if (error) {
 			callback(null, error);
 		} else {
@@ -65,7 +65,7 @@ UserController.prototype.getForId = function (idUser, callback) {
 };
 
 UserController.prototype.findName = function(name, callback) {
-	User.find({name: new RegExp(name, "i"), userType: "1" }, function (error, doctors) {
+	User.find({name: new RegExp(global.encrypt(name), "i"), userType: "1" }, function (error, doctors) {
 		if (error) {
 			callback(null, error);
 		} else {
@@ -88,7 +88,7 @@ UserController.prototype.insert = function(_user, callback) {
 	var functions = this.functions;
 	var userType = _user.userType;
 
-	User.find({ email: _user.email }, function (error, users) {
+	User.find({ email: global.encrypt(_user.email) }, function (error, users) {
 		if (error) {
 			callback(null, error);
 		} else {
@@ -195,7 +195,7 @@ UserController.prototype.insert = function(_user, callback) {
 UserController.prototype.login = function(login, callback) {
 	if (login && login.email && login.password) {
 		var passwordHash = sha512(login.password).toString('hex');
-		User.find({ email: login.email, password: passwordHash }, function (error, users) {
+		User.find({ email: global.encrypt(login.email), password: global.encrypt(passwordHash) }, function (error, users) {
 			if (error) {
 				callback(null, error);
 			} else {

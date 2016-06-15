@@ -22,6 +22,29 @@ app.use('/uploads', express.static('uploads'));
 
 global.getSuperSecret = app.get('superSecret');
 
+var crypto = require('crypto');
+
+global.encrypt = function (text){
+	var cipher = crypto.createCipher('aes-256-ctr', config.secret);
+	var crypted = cipher.update(text,'utf8','hex');
+	crypted += cipher.final('hex');
+	return crypted;
+} 
+
+global.decrypt = function (text){
+	if (text === null || typeof text === 'undefined') {return text;};
+	var decipher = crypto.createDecipher('aes-256-ctr', config.secret);
+	try {
+		var dec = decipher.update(text,'hex','utf8');
+		dec += decipher.final('utf8');
+		return dec;
+	} catch(ex) {
+		console.log('failed: ' + text);
+		console.log(ex);
+		return;
+	}
+}
+
 app.use(function (req, res, next) {
 	if (req.url.indexOf('/users/login') >= 0 || req.url.indexOf('password') >= 0 || 
 		(req.url.indexOf('/users') >= 0 && req.method == 'POST')) {
