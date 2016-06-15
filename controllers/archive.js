@@ -31,10 +31,8 @@ ArchiveController.prototype.insert = function (_idUser,_archive,callback) {
     });
 }
 
-ArchiveController.prototype.getForId = function (id, callback) {
-    var userController = new UserController();
-
-    Archive.find({ _id: id },function (error, archives) {
+ArchiveController.prototype.get = function (_id, callback) {
+    Archive.find({ _id: _id },function (error, archives) {
         if (error) {
             callback(null, error);
         } else {
@@ -44,8 +42,6 @@ ArchiveController.prototype.getForId = function (id, callback) {
 };
 
 ArchiveController.prototype.delete = function (id, callback) {
-    var userController = new UserController();
-
     Archive.remove({ _id: id },function (error, result) {
         if (error) {
             callback(null, error);
@@ -55,10 +51,8 @@ ArchiveController.prototype.delete = function (id, callback) {
     })
 };
 
-ArchiveController.prototype.get = function (idUser, callback) {
-    var userController = new UserController();
-
-    Archive.findOne({ _id: idUser },function (error, archive) {
+ArchiveController.prototype.getUser = function (idUser, callback) {
+    Archive.find({ idUser: idUser },function (error, archive) {
         if (error) {
             callback(null, error);
         } else {

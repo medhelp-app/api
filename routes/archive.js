@@ -5,8 +5,8 @@ var multer = require('multer');
 var ArchiveController = require('../controllers/archive');
 var archiveController = new ArchiveController();
 
-router.route('/:userId').get(function (req, res) {
-    archiveController.getForId(req.params.userId, function (archives, error) {
+router.route('/patient/:userId').get(function (req, res) {
+    archiveController.getUser(req.params.userId, function (archives, error) {
         if (error) {
             res.status(404);
             res.send(error);
