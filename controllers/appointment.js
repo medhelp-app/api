@@ -41,7 +41,7 @@ AppointmentController.prototype.getDoctors = function(_doctorId, callback) {
             if (doctors.length === 0) {
                 callback({error: "Médico não existe."});
             } else {
-                Appointment.find({ doctorId : _doctorId}).populate('availabilityId').populate('patientId').exec(function (error, availability ) {
+                Appointment.find({ doctorId : _doctorId, status: true }).populate('availabilityId').populate('patientId').exec(function (error, availability ) {
                     if (error) {
                         callback(error);
                     } else {
@@ -63,7 +63,55 @@ AppointmentController.prototype.getDoctors = function(_doctorId, callback) {
                                     };
 
                                     availabilities.push(av);
-                                    if (i + i < availability.length)
+                                    if (i + 1 < availability.length)
+                                        load(i + 1);
+                                    else
+                                        callback(availabilities);
+                                });
+                            }
+                        } else {
+                            callback([]);
+                        }
+                    }
+                });
+            }
+        }
+    })
+};
+
+AppointmentController.prototype.getSecretary = function(_doctorId, callback) {
+    Doctor.find({_id : _doctorId},function (error, doctors) {
+        if (error) {
+            callback(error)
+        } else {
+            if (doctors.length === 0) {
+                callback({error: "Médico não existe."});
+            } else {
+                Appointment.find({ doctorId : _doctorId }).populate('availabilityId').populate('patientId').exec(function (error, availability ) {
+                    if (error) {
+                        callback(error);
+                    } else {
+                        var availabilities = [];
+
+                        if (availability.length > 0) {
+                            load(0);
+
+                            function load (i) {
+                                User.find({ _id: availability[i].patientId }, function (error, user) {
+                                    var av = {
+                                        "_id": availability[i]._id,
+                                        "date": availability[i].date,
+                                        "availabilityId": availability[i].availabilityId,
+                                        "patientId": availability[i].patientId._id,
+                                        "profileImage": availability[i].patientId.profileImage,
+                                        "doctorId": availability[i].doctorId,
+                                        "user": user[0]
+                                    };
+
+                                    if (!availability[i].status)
+                                        availabilities.push(av);
+
+                                    if (i + 1 < availability.length)
                                         load(i + 1);
                                     else
                                         callback(availabilities);
@@ -124,6 +172,23 @@ AppointmentController.prototype.getPatients = function(_patientId, callback) {
         }
     })
 };
+
+AppointmentController.prototype.accept = function(_id,callback) {
+    Appointment.findOne({ _id: _id }, function (err, appointment) {
+        if (err) {
+            callback(err)
+        } else {
+            appointment.status = true;
+            appointment.save(function (error) {
+                if (error) {
+                    callback(null, error);
+                } else {
+                    callback({success: 'true'})
+                }
+            });
+        }
+    })
+}
 
 AppointmentController.prototype.remove = function(_id,callback) {
     Appointment.remove({ _id: _id }, function (err) {

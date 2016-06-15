@@ -44,7 +44,7 @@ UserController.prototype.update = function (id, user, callback) {
 			u.email = user.email;
 			if (user.userType)
 				u.userType = user.userType;
-			
+
 			u.profileImage = user.profileImage;
 
 			u.save(function (error) {
@@ -383,6 +383,27 @@ UserController.prototype.getIdSecretary = function (idUser, callback) {
 		}
 	})
 };
+
+UserController.prototype.getByDoctor = function (id, callback) {
+	Secretary.findOne({ doctorId: id },function (error, secretary) {
+		if(error){
+			callback({Error: 'Error ao buscar!'})
+		} else {
+			if (secretary) {
+				User.findById(secretary._id, function (error, user) {
+					if(error){
+						callback(null, error);
+					}else{
+						callback({user:user,secretary:secretary });
+					}
+				})
+			} else {
+				callback(null);
+			}
+		}
+	})
+};
+
 UserController.prototype.insertSecretary = function(_user, callback) {
 	var functions = this.functions;
 

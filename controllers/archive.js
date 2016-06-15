@@ -53,7 +53,7 @@ ArchiveController.prototype.getForId = function (id, callback) {
     })
 };
 
-ArchiveController.prototype.delete = function (idUser, callback) {
+ArchiveController.prototype.delete = function (id, callback) {
     var userController = new UserController();
 
     Archive.remove({ _id: id },function (error, result) {

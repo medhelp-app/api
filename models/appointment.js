@@ -11,6 +11,7 @@ var AppointmentSchema = new Schema({
     availabilityId :  {
         type : Schema.Types.ObjectId, ref: 'availabilityDoctor'
     },
+    status: Boolean,
     date: Date
 }, { toJSON: { getters: true } });
 
