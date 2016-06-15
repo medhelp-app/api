@@ -46,7 +46,7 @@ UserController.prototype.update = function (id, user, callback) {
 }
 
 UserController.prototype.getEmail = function(_email,callback) {
-	User.find({email:global.encrypt(_email)},function (error, users) {
+	User.find({ email: global.encrypt(_email) }, function (error, users) {
 		if (error) {
 			callback(null, error);
 		} else {
@@ -253,7 +253,7 @@ UserController.prototype.updatePassword = function (_id, body, callback) {
 }
 
 UserController.prototype.forgottenPassword_sendToken = function (email, callback) {
-	User.find({email: email},function (err, users) {
+	User.find({email: global.encrypt(email)},function (err, users) {
 		if (err) {
 			callback({error: 'Error ao buscar usuário!'})
 		} else {
@@ -343,7 +343,7 @@ UserController.prototype.listSecretary = function(callback) {
 	});
 };
 UserController.prototype.findNameSecretary = function(name, callback) {
-	User.find({name: new RegExp(name, "i"), userType: "2" }, function (error, users) {
+	User.find({name: new RegExp(global.encrypt(name), "i"), userType: "2" }, function (error, users) {
 		if (error) {
 			callback(null, error);
 		} else {
@@ -378,7 +378,7 @@ UserController.prototype.insertSecretary = function(_user, callback) {
 			callback({Error: 'Error insperado!'})
 		}else {
 			if(doctor){
-				User.find({ email: _user.email }, function (error, users) {
+				User.find({ email: global.encrypt(_user.email) }, function (error, users) {
 					if (error) {
 						callback(null, error);
 					} else {

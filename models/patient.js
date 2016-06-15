@@ -3,33 +3,49 @@ var Schema = mongoose.Schema;
 
 var PatientSchema = new Schema({
     addressStreet :{
-        type : String
+        type : String,
+        get: global.decrypt, 
+        set: global.encrypt
     },
     addressNumber :{
-        type : String
+        type : String,
+        get: global.decrypt, 
+        set: global.encrypt
     },
     city :{
-        type : String
+        type : String,
+        get: global.decrypt, 
+        set: global.encrypt
     },
     state :{
-        type : String
+        type : String,
+        get: global.decrypt, 
+        set: global.encrypt
     },
     zipCode :{
-        type : String
+        type : String,
+        get: global.decrypt, 
+        set: global.encrypt
     },
     country :{
-        type : String
+        type : String,
+        get: global.decrypt, 
+        set: global.encrypt
     },
     phone :{
-        type : String
+        type : String,
+        get: global.decrypt, 
+        set: global.encrypt
     },
     healthInsurance:{
-        type: String
+        type: String,
+        get: global.decrypt, 
+        set: global.encrypt
     },
     _id :{
         type: Schema.Types.ObjectId, ref: 'user'
     },
     bodyPart : [{part : String, problems: [{problem: String, description:String, severity: String, occurredDate : Date, resolved: Boolean}]}]
-});
+}, { toJSON: { getters: true } });
 
 module.exports = mongoose.model('patient', PatientSchema);

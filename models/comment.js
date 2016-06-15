@@ -6,7 +6,9 @@ var CommentSchema = new Schema({
         type : Schema.Types.ObjectId, ref: 'publications'
     },
     text: {
-        type: String
+        type: String,
+        get: global.decrypt, 
+        set: global.encrypt
     },
     idUser: {
         type : Schema.Types.ObjectId, ref: 'user'
@@ -14,6 +16,6 @@ var CommentSchema = new Schema({
     date: {
     	type: Date
     }
-});
+}, { toJSON: { getters: true } });
 
 module.exports = mongoose.model('comment', CommentSchema);

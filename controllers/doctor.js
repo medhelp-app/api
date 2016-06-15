@@ -30,7 +30,7 @@ DoctorController.prototype.findSpeciality = function(callback) {
 
 DoctorController.prototype.findName = function(name, callback) {
 	var userController = new UserController();
-	User.find({name: new RegExp(name, "i"), userType: "1" }, function (error, users) {
+	User.find({name: new RegExp(global.encrypt(name), "i"), userType: "1" }, function (error, users) {
 		if (error) {
 			callback(null, error);
 		} else {

@@ -10,13 +10,15 @@ var PublicationSchema = new Schema({
         enum: ['post', 'question']
     },
     text: {
-        type: String
+        type: String,
+        get: global.decrypt, 
+        set: global.encrypt
     },
     date: {
     	type: Date
     },
     comments: [{ type: Schema.Types.ObjectId, ref: 'comment'}],
     votes: [{ type: Schema.Types.ObjectId, ref: 'vote'}]
-});
+}, { toJSON: { getters: true } });
 
 module.exports = mongoose.model('publication', PublicationSchema);

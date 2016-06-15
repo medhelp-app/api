@@ -9,9 +9,11 @@ var PrescriptionsSchema = new Schema({
         type : Schema.Types.ObjectId, ref: 'doctors'
     },
     problem: {
-        type : String
+        type : String,
+        get: global.decrypt, 
+        set: global.encrypt
     },
     medicines: [{name: String, amount: String, occurence: String, description: String, note: String}]
-});
+}, { toJSON: { getters: true } });
 
 module.exports = mongoose.model('prescriptions', PrescriptionsSchema);
