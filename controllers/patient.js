@@ -252,7 +252,17 @@ PatientController.prototype.insertProblem = function (idUser,_problem, callback)
                     resolved: _problem.resolved
                 }
                 if(_problem.part === 'rightArm'){
-                    patient.bodyPart[0].problems.push(problem);
+
+                    if(_problem.subpart === 'hand'){ 
+                      patient.bodyPart[0].problems.push(problem);  
+                    }else if(_problem.subpart === 'forearm'){
+                      patient.bodyPart[1].problems.push(problem);  
+                    }else if(_problem.subpart === 'elbow'){
+                      patient.bodyPart[2].problems.push(problem);
+                    }else if(_problem.subpart === 'arm'){
+                      patient.bodyPart[3].problems.push(problem);      
+                    }
+                    
                     patient.save(function (error) {
                         if(error){
                             callback({ success : "false" })
@@ -261,7 +271,17 @@ PatientController.prototype.insertProblem = function (idUser,_problem, callback)
                         }
                     })
                 }else if(_problem.part === 'leftArm'){
-                    patient.bodyPart[1].problems.push(problem);
+
+                    if(_problem.subpart === 'hand'){ 
+                      patient.bodyPart[4].problems.push(problem);  
+                    }else if(_problem.subpart === 'forearm'){
+                      patient.bodyPart[5].problems.push(problem);  
+                    }else if(_problem.subpart === 'elbow'){
+                      patient.bodyPart[6].problems.push(problem);
+                    }else if(_problem.subpart === 'arm'){
+                      patient.bodyPart[7].problems.push(problem);      
+                    }
+
                     patient.save(function (error) {
                         if(error){
                             callback({ success : "false" })
@@ -270,7 +290,17 @@ PatientController.prototype.insertProblem = function (idUser,_problem, callback)
                         }
                     })
                 }else if(_problem.part === 'rightLeg'){
-                    patient.bodyPart[2].problems.push(problem);
+
+                    if(_problem.subpart === 'foot'){ 
+                      patient.bodyPart[8].problems.push(problem);  
+                    }else if(_problem.subpart === 'leg'){
+                      patient.bodyPart[9].problems.push(problem);  
+                    }else if(_problem.subpart === 'thigh'){
+                      patient.bodyPart[10].problems.push(problem);
+                    }else if(_problem.subpart === 'knee'){
+                      patient.bodyPart[11].problems.push(problem);      
+                    }
+
                     patient.save(function (error) {
                         if(error){
                             callback({ success : "false" })
@@ -279,7 +309,17 @@ PatientController.prototype.insertProblem = function (idUser,_problem, callback)
                         }
                     })
                 }else if(_problem.part === 'leftLeg'){
-                    patient.bodyPart[3].problems.push(problem);
+
+                    if(_problem.subpart === 'foot'){ 
+                      patient.bodyPart[12].problems.push(problem);  
+                    }else if(_problem.subpart === 'leg'){
+                      patient.bodyPart[13].problems.push(problem);  
+                    }else if(_problem.subpart === 'thigh'){
+                      patient.bodyPart[14].problems.push(problem);
+                    }else if(_problem.subpart === 'knee'){
+                      patient.bodyPart[15].problems.push(problem);      
+                    }
+
                     patient.save(function (error) {
                         if(error){
                             callback({ success : "false" })
@@ -287,8 +327,16 @@ PatientController.prototype.insertProblem = function (idUser,_problem, callback)
                             callback({ success: "true" })
                         }
                     })
-                }else if(_problem.part === 'stomach'){
-                    patient.bodyPart[4].problems.push(problem);
+                }else if(_problem.part === 'trunk'){
+
+                    if(_problem.subpart === 'thorax'){ 
+                      patient.bodyPart[16].problems.push(problem);  
+                    }else if(_problem.subpart === 'loin'){
+                      patient.bodyPart[17].problems.push(problem);  
+                    }else if(_problem.subpart === 'abdomen'){
+                      patient.bodyPart[18].problems.push(problem);
+                    }
+
                     patient.save(function (error) {
                         if(error){
                             callback({ success : "false" })
@@ -296,17 +344,15 @@ PatientController.prototype.insertProblem = function (idUser,_problem, callback)
                             callback({ success: "true" })
                         }
                     })
-                }else if(_problem.part === 'chest'){
-                    patient.bodyPart[5].problems.push(problem);
-                    patient.save(function (error) {
-                        if(error){
-                            callback({ success : "false" })
-                        }else{
-                            callback({ success: "true" })
-                        }
-                    })
+
                 }else if(_problem.part === 'head'){
-                    patient.bodyPart[6].problems.push(problem);
+
+                    if(_problem.subpart === 'face'){ 
+                      patient.bodyPart[19].problems.push(problem);  
+                    }else if(_problem.subpart === 'head'){
+                      patient.bodyPart[20].problems.push(problem);  
+                    }
+
                     patient.save(function (error) {
                         if(error){
                             callback({ success : "false" })
