@@ -245,6 +245,7 @@ PatientController.prototype.insertProblem = function (idUser,_problem, callback)
         } else {
             if (patient) {
                 var problem = {
+                    local:_problem.local,
                     problem: _problem.problem,
                     description: _problem.description,
                     severity: _problem.severity,
