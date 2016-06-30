@@ -50,7 +50,7 @@ router.route('/login').post(function (req, res) {
 			res.send(error);
 		} else {
 			var token = jwt.sign(user._id, global.getSuperSecret, {
-				expiresIn: '1h'
+				expiresIn: '2m'
 			});
 
 			res.json({
