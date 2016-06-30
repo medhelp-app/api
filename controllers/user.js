@@ -9,7 +9,7 @@ var Secretary = require('../models/secretary');
 
 var token = require('token');
 token.defaults.secret = 'medhelp';
-token.defaults.timeStep = 1;// 30 minutos
+token.defaults.timeStep = 30*60;// 30 minutos
 
 var smtpTransport = require('nodemailer-smtp-transport');
 
