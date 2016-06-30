@@ -140,7 +140,7 @@ UserController.prototype.insert = function(_user, callback) {
 												patient.phone = "";
 												patient.profileImage = "";
 												patient.bodyPart = [{part : 'rightArm', subpart: 'hand', problems: []},{part : 'rightArm', subpart: 'forearm', problems: []},{part : 'rightArm', subpart: 'elbow', problems: []},{part : 'rightArm', subpart: 'arm', problems: []},
-																	{part : 'leftArm', subpart: 'hand' ,problems: []},{part : 'leftArm', subpart: 'forearm' ,problems: []},{part : 'leftArm', subpart: 'albow' ,problems: []},{part : 'leftArm', subpart: 'arm' ,problems: []},
+																	{part : 'leftArm', subpart: 'hand' ,problems: []},{part : 'leftArm', subpart: 'forearm' ,problems: []},{part : 'leftArm', subpart: 'elbow' ,problems: []},{part : 'leftArm', subpart: 'arm' ,problems: []},
 																	{part : 'rightLeg', subpart: 'foot' ,problems: []},{part : 'rightLeg', subpart: 'leg' ,problems: []},{part : 'rightLeg', subpart: 'thigh' ,problems: []},{part : 'rightLeg', subpart: 'knee' ,problems: []},
 																	{part : 'leftLeg', subpart:'foot', problems: []},{part : 'leftLeg', subpart:'leg', problems: []},{part : 'leftLeg', subpart:'thigh', problems: []},{part : 'leftLeg', subpart:'knee', problems: []},
 																	{part : 'trunk', subpart:'thorax',problems: []},{part : 'trunk', subpart:'loin',problems: []},{part : 'trunk', subpart:'abdomen',problems: []},
