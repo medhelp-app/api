@@ -391,7 +391,7 @@ PatientController.prototype.getProblemsByPart = function (idUser, part, callback
     })
 };
 PatientController.prototype.updateProblem = function (idUser,_problem, callback) {
-    Patient.findOne({_id: idUser},{ bodyPart: { $elemMatch: { part: _problem.part } }} , function (error, patient) {
+    Patient.findOne({_id: idUser} , function (error, patient) {
         if (error) {
             callback(error);
         } else {
