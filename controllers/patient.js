@@ -395,7 +395,26 @@ PatientController.prototype.updateProblem = function (idUser,_problem, callback)
         if (error) {
             callback(error);
         } else {
-            callback(patient);
+
+            for(i=0;i<patient.bodyPart.length;i++){
+
+                for(j=0;j<patient.bodyPart[i].problems.length;j++){
+
+                    if(patient.bodyPart[i].problems[j]._id ==_problem._id){
+
+                        patient.bodyPart[i].problems[j].description = _problem.description;
+                        patient.bodyPart[i].problems[j].local = _problem.local;
+                        patient.bodyPart[i].problems[j].occurredDate = _problem.occurredDate;
+                        patient.bodyPart[i].problems[j].problem = _problem.problem;
+                        patient.bodyPart[i].problems[j].resolved = _problem.resolved;
+                        patient.bodyPart[i].problems[j].severity = _problem.severity;
+
+                    }
+                }
+
+                callback(patient);
+            }
+
         }
     });
 }
