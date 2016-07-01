@@ -375,15 +375,15 @@ PatientController.prototype.insertProblem = function (idUser,_problem, callback)
 PatientController.prototype.getProblemsByPart = function (idUser, part, callback) {
     Patient.find({_id: idUser},{ bodyPart: { $elemMatch: { part: part } }},function (error, patient) {
         if(error){
-            callback(error)
+            callback(error);
         }else{
             if(patient.length===0){
-                callback({ error : "Paciente não existene." })
+                callback({ error : "Paciente não existene." });
             }else{
                 if(patient[0].bodyPart.length===0){
-                    callback({ error : "Parte do corpo não existente." })
+                    callback({ error : "Parte do corpo não existente." });
                 }else {
-                    callback(patient[0].bodyPart[0].problems)
+                    callback(patient[0].bodyPart[0].problems);
                 }
             }
 
@@ -392,36 +392,12 @@ PatientController.prototype.getProblemsByPart = function (idUser, part, callback
 };
 PatientController.prototype.updateProblem = function (idUser,_problem, callback) {
     Patient.findOne({_id: idUser},{ bodyPart: { $elemMatch: { part: _problem.part } }} , function (error, patient) {
-        if (error) {
-            callback(error)
-        } else {
-            var tam = patient.bodyPart[0].problems.length;
-            var problems = patient.bodyPart[0].problems;
-            var encontrou = false;
-            for(var i = 0; i<tam; i++){
-                if(_problem.id == patient.bodyPart[0].problems[i]._id) {
-                    problems[i].problem = _problem.problem;
-                    problems[i].description = _problem.description;
-                    problems[i].severity = _problem.severity;
-                    problems[i].occurredDate = _problem.occurredDate;
-                    problems[i].resolved = _problem.resolved;
-                    encontrou = true;
-                    break;
-                }
-            }
-            if(encontrou){
-                Patient.update({ _id: idUser, "bodyPart.part":_problem.part}, { $set: {"bodyPart.$.problems": problems} }, { upsert: false }, function (error, status) {
-                    if(error){
-                        callback(error)
-                    }else{
-                        callback({ success: "true" })
-                    }
-                })
-            }else{
-                callback({ error : "Paciente não existene." })
-            }
+        if(error){
+            callback(error);
+        }else{
+            callback(patient);
         }
-    })
+    });
 }
 
 module.exports = PatientController;
