@@ -290,7 +290,7 @@ PatientController.prototype.insertProblem = function (idUser,_problem, callback)
                         }else{
                             callback({ success: "true" })
                         }
-                    })
+                    });
                 }else if(_problem.part === 'rightLeg'){
 
                     if(_problem.subpart === 'foot'){ 
@@ -412,7 +412,14 @@ PatientController.prototype.updateProblem = function (idUser,_problem, callback)
                     }
                 }
             }
-             callback(patient);
+             
+                    patient.save(function (error) {
+                        if(error){
+                            callback({ success : "false" })
+                        }else{
+                            callback({ success: "true" })
+                        }
+                    });
         }
     });
 }
