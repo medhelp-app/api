@@ -411,10 +411,8 @@ PatientController.prototype.updateProblem = function (idUser,_problem, callback)
 
                     }
                 }
-
-                callback(patient);
             }
-
+             callback(patient);
         }
     });
 }
