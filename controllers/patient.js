@@ -410,13 +410,7 @@ PatientController.prototype.updateProblem = function (idUser,_problem, callback)
                 }
             }
             if(encontrou){
-                Patient.update({ _id: idUser, "bodyPart.part":_problem.part}, { $set: {"bodyPart.$.problems": problems} }, { upsert: false }, function (error, status) {
-                    if(error){
-                        callback(error);
-                    }else{
-                        callback({ success: "true" });
-                    }
-                })
+               callback(patient);
             }else{
                 callback({ error : "Paciente não existene." });
             }
