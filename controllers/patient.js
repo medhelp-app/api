@@ -395,25 +395,7 @@ PatientController.prototype.updateProblem = function (idUser,_problem, callback)
         if (error) {
             callback(error);
         } else {
-            var tam = patient.bodyPart[0].problems.length;
-            var problems = patient.bodyPart[0].problems;
-            var encontrou = false;
-            for(var i = 0; i<tam; i++){
-                if(_problem.id == patient.bodyPart[0].problems[i]._id) {
-                    problems[i].problem = _problem.problem;
-                    problems[i].description = _problem.description;
-                    problems[i].severity = _problem.severity;
-                    problems[i].occurredDate = _problem.occurredDate;
-                    problems[i].resolved = _problem.resolved;
-                    encontrou = true;
-                    break;
-                }
-            }
-            if(encontrou){
-               callback(patient);
-            }else{
-                callback({ error : "Paciente não existene." });
-            }
+            callback(patient);
         }
     });
 }
