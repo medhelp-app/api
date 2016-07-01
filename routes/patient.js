@@ -101,8 +101,8 @@ router.route('/:id/bodyparts').post(function (req, res) {
     });
 });
 
-router.route('/:id/bodyparts/:idProblem').put(function (req, res) {
-    patientController.updateProblem(req.params.id,req.params.idProblem, req.body, function (patient, error) {
+router.route('/:id/bodyparts/prob').put(function (req, res) {
+    patientController.updateProblem(req.params.id, req.body, function (patient, error) {
         if (error) {
             res.status(400);
             res.send(error);

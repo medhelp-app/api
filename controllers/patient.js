@@ -39,6 +39,7 @@ PatientController.prototype.insert = function (_patient, callback) {
     })
 }
 
+
 PatientController.prototype.getForId = function (idUser, callback) {
     var userController = new UserController();
 
@@ -389,7 +390,7 @@ PatientController.prototype.getProblemsByPart = function (idUser, part, callback
         }
     })
 };
-PatientController.prototype.updateProblem = function (idUser,idProblem,_problem, callback) {
+PatientController.prototype.updateProblem = function (idUser,_problem, callback) {
     Patient.findOne({_id: idUser},{ bodyPart: { $elemMatch: { part: _problem.part } }} , function (error, patient) {
         if (error) {
             callback(error)
@@ -398,7 +399,7 @@ PatientController.prototype.updateProblem = function (idUser,idProblem,_problem,
             var problems = patient.bodyPart[0].problems;
             var encontrou = false;
             for(var i = 0; i<tam; i++){
-                if(idProblem == patient.bodyPart[0].problems[i]._id) {
+                if(_problem.id == patient.bodyPart[0].problems[i]._id) {
                     problems[i].problem = _problem.problem;
                     problems[i].description = _problem.description;
                     problems[i].severity = _problem.severity;
