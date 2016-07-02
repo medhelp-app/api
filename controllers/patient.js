@@ -400,7 +400,7 @@ PatientController.prototype.updateProblem = function (idUser,_problem, callback)
 
                 for(j=0;j<patient.bodyPart[i].problems.length;j++){
 
-                    if(patient.bodyPart[i].problems[j]._id ==_problem._id){
+                    if(patient.bodyPart[i].problems[j]._id ==_problem.idItem){
 
                         patient.bodyPart[i].problems[j].description = _problem.description;
                         patient.bodyPart[i].problems[j].local = _problem.local;
