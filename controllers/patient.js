@@ -251,7 +251,8 @@ PatientController.prototype.insertProblem = function (idUser,_problem, callback)
                     description: _problem.description,
                     severity: _problem.severity,
                     occurredDate : _problem.occurredDate,
-                    resolved: _problem.resolved
+                    resolved: _problem.resolved,
+                    level: _problem.level
                 }
                 if(_problem.part === 'rightArm'){
 
@@ -408,6 +409,7 @@ PatientController.prototype.updateProblem = function (idUser,_problem, callback)
                         patient.bodyPart[i].problems[j].problem = _problem.problem;
                         patient.bodyPart[i].problems[j].resolved = _problem.resolved;
                         patient.bodyPart[i].problems[j].severity = _problem.severity;
+                        patient.bodyPart[i].problems[j].level = _problem.level;
 
                     }
                 }
